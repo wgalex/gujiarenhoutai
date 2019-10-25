@@ -198,7 +198,24 @@ export default new Router({
         },
       ]
     },
-     
+    {
+      path: '/celebrityAdmin',
+      name: 'celebrityIndex',
+      // redirect: {name: 'addComP'},
+      component: () => import('@/views/celebrityAdmin/celebrityIndex'),
+      children: [
+        {
+          path: 'complaintbanner',
+          name: 'complaintbanner',
+          component: () => import('@/views/complaint/complaintbanner/index')
+        },
+        {
+          path: 'complaintCase',
+          name: 'complaintCase',
+          component: () => import('@/views/complaint/complaintCase/complaintCase')
+        },
+      ]
+    },
     {
       path: '*',
       redirect: '/login'
