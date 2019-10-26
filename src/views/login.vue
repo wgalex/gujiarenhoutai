@@ -54,6 +54,8 @@ export default {
         // console.log(res.data);
         localStorage.setItem('usersId',res.data.id)
         localStorage.setItem('pwd',res.data.password)
+        localStorage.setItem('departmentId',res.data.departmentId)
+        localStorage.setItem('departmentName',res.data.departmentName)
         // let data = {'id':res.id,'password':res.password}
         //  this.$store.conmmit('getId',data)
         if (res.data.roleId == 1) {

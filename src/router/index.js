@@ -204,15 +204,27 @@ export default new Router({
       // redirect: {name: 'addComP'},
       component: () => import('@/views/celebrityAdmin/celebrityIndex'),
       children: [
+        //账号管理
         {
-          path: 'complaintbanner',
-          name: 'complaintbanner',
-          component: () => import('@/views/complaint/complaintbanner/index')
+          path: '/branchList',
+          name: 'branchList',
+          component: () => import('@/views/celebrityAdmin/peopleManagement/branchList')
         },
+        //级别管理
         {
-          path: 'complaintCase',
-          name: 'complaintCase',
-          component: () => import('@/views/complaint/complaintCase/complaintCase')
+          path: '/LevelManagementList',
+          name: 'LevelManagementList',
+          component: () => import('@/views/celebrityAdmin/LevelManagement/LevelManagementList')
+        },//类别管理
+        {
+          path: '/categoryManagementList',
+          name: 'categoryManagementList',
+          component: () => import('@/views/celebrityAdmin/categoryManagement/categoryManagementList')
+        },//名人管理
+        {
+          path: '/celebrityPersonManagementList',
+          name: 'celebrityPersonManagementList',
+          component: () => import('@/views/celebrityAdmin/celebrityPersonManagement/celebrityPersonManagementList')
         },
       ]
     },

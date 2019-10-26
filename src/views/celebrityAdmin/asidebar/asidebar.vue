@@ -10,25 +10,70 @@
         <el-submenu index="1">
           <template slot="title">
             <i class="el-icon-menu"></i>
-            <span slot="title">荣誉奖项管理</span>
+            <span slot="title">账号管理</span>
           </template>
-          <router-link :to="{name: ''}" >
-            <el-menu-item index="1-1">誉华奖</el-menu-item>
-          </router-link>
-        <router-link :to="{name: ''}" >
-            <el-menu-item index="1-2">双基奖</el-menu-item>
-          </router-link>
-          <!-- <router-link :to="{name: 'listComp'}" >
-            <el-menu-item index="1-2">首页列表</el-menu-item>
-          </router-link> -->
+            <router-link :to="{name: 'branchList'}">
+                <el-menu-item index="1-1">账号列表</el-menu-item>
+            </router-link>
+            <!-- <router-link :to="{name: 'branchList'}" >
+                <el-menu-item index="1-3">技术部账号</el-menu-item>
+            </router-link>
+              <router-link :to="{name: 'branchListadd'}">
+                <el-menu-item index="1-4">增加部门</el-menu-item>
+            </router-link> -->
+        </el-submenu>
+        <el-submenu index="2">
+          <template slot="title">
+            <i class="el-icon-menu"></i>
+            <span slot="title">层级管理</span>
+          </template>
+            <router-link :to="{name: 'LevelManagementList'}">
+                <el-menu-item index="2-1">层级列表</el-menu-item>
+            </router-link>
+            <!-- <router-link :to="{name: 'branchList'}" >
+                <el-menu-item index="2-3">技术部账号</el-menu-item>
+            </router-link>
+              <router-link :to="{name: 'branchListadd'}">
+                <el-menu-item index="3-4">增加部门</el-menu-item>
+            </router-link> -->
+        </el-submenu>
+        <el-submenu index="3">
+          <template slot="title">
+            <i class="el-icon-menu"></i>
+            <span slot="title">类别管理</span>
+          </template>
+            <router-link :to="{name: 'categoryManagementList'}">
+                <el-menu-item index="3-1">类别列表</el-menu-item>
+            </router-link>
+            <!-- <router-link :to="{name: 'branchList'}" >
+                <el-menu-item index="3-3">技术部账号</el-menu-item>
+            </router-link>
+              <router-link :to="{name: 'branchListadd'}">
+                <el-menu-item index="3-4">增加部门</el-menu-item>
+            </router-link> -->
+        </el-submenu>
+        <el-submenu index="4">
+          <template slot="title">
+            <i class="el-icon-menu"></i>
+            <span slot="title">名人管理</span>
+          </template>
+            <router-link :to="{name: 'celebrityPersonManagementList'}">
+                <el-menu-item index="4-1">名人列表</el-menu-item>
+            </router-link>
+            <!-- <router-link :to="{name: 'branchList'}" >
+                <el-menu-item index="4-3">技术部账号</el-menu-item>
+            </router-link>
+              <router-link :to="{name: 'branchListadd'}">
+                <el-menu-item index="4-4">增加部门</el-menu-item>
+            </router-link> -->
         </el-submenu>
         <!-- <router-link :to="{name: 'complaintEdit'}" >
           <el-menu-item index="/complaintIndex/complaintEdit" >投诉管理</el-menu-item>
         </router-link> -->
-        <el-submenu index="2">
+        <!-- <el-submenu index="2">
           <template slot="title">
             <i class="el-icon-menu"></i>
-            <span slot="title">获奖人员管理</span>
+            <span slot="title">人员管理</span>
           </template>
           <router-link :to="{name: ''}" >
             <el-menu-item index="2-1">誉华奖</el-menu-item>
@@ -36,7 +81,7 @@
         <router-link :to="{name: ''}" >
             <el-menu-item index="2-2">双基奖</el-menu-item>
           </router-link>
-        </el-submenu>
+        </el-submenu> -->
         <!-- <router-link :to="{name: 'complaintEmail'}" >
           <el-menu-item index="/complaintIndex/complaintEmail" >电邮管理</el-menu-item>
         </router-link> -->
