@@ -16,6 +16,22 @@ export function addLevel (add) {
     data: qs.stringify(add)
   })
 }
+//根据id查寻
+export function queryIdLevel (id) {
+  return fetch({
+    url: `/kukacms/visitor/level/selectdetail.htm?id=${id}`,
+    method: 'get',
+    // data: qs.stringify(id)
+  })
+}
+//根据id修改
+export function editLevel (edit) {
+  return fetch({
+    url: `/kukacms/visitor/level/update.htm`,
+    method: 'post',
+    data: qs.stringify(edit)
+  })
+}
 // 新增 banner 图片
 // export function addIndexComppic (url,remark) {
 //   return fetch({

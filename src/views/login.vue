@@ -48,7 +48,6 @@ export default {
       }
     },
     onSubmit () {
-      debugger
       login(this.loginForm).then(res => {
         setToken(res.data)
         // console.log(res.data);
@@ -82,7 +81,7 @@ export default {
             name: 'complaintIndex'
           })
         }else if (res.data.roleId == 8) {
-          // 名人堂总管理员 
+          // 名人堂管理员 
           localStorage.setItem('roleId', res.data.roleId)
           this.$router.push({
             name: 'celebrityIndex'

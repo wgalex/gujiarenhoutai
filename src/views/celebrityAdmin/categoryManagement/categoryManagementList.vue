@@ -1,157 +1,174 @@
 <template>
   <div>
-    <h1 style="margin: 20px 0; font-size: 24px" >用户列表</h1>
+    <h1 style="margin: 20px 0; font-size: 24px">类别列表</h1>
     <el-row>
-      <el-button type="primary" size="mini" class="btn" @click="dialog = true" >新增账户</el-button>
+      <el-button type="primary" size="mini" class="btn" @click="dialog = true">新增类别</el-button>
     </el-row>
-    <el-table
-      :data="list"
-      border
-      style="width: 100%">
-      <el-table-column
-        align="center"
-        prop="id"
-        label="序号"
-        width="50">
-      </el-table-column>
-      <el-table-column
-        align="center"
-        prop="userName"
-        label="姓名"
-      ></el-table-column>
-      <el-table-column
-        align="center"
-        prop="account"
-        label="账户"
-      ></el-table-column>
-      <el-table-column
-        align="center"
-        label="角色"
-      >
-        <template slot-scope="scope" >
-          <p>{{scope.row.roleId | stage}}</p>
-        </template>
-      </el-table-column>
-      <el-table-column
-        align="center"
-        label="操作"
-        width="150"
-      >
-        <template slot-scope="scope" >
-          <el-button type="primary" size="mini" @click="del(scope.row.id)" >删除</el-button>
+    <el-table :data="list" border style="width: 100%">
+      <el-table-column align="center" prop="id" label="序号" width="50"></el-table-column>
+      <el-table-column align="center" prop="levelCode" label="层级"></el-table-column>
+      <el-table-column align="center" prop="orginCategoryCode" label="上一个级别的类别码"></el-table-column>
+      <el-table-column align="center" prop="categoryName" label="类别名称"></el-table-column>
+      <el-table-column align="center" prop="categoryCode" label="类别码"></el-table-column>
+      <el-table-column align="center" prop="departmentName" label="部门"></el-table-column>
+      <el-table-column align="center" prop="departmentId" label="部门id"></el-table-column>
+      <el-table-column align="center" label="操作" width="150">
+        <template slot-scope="scope">
+          <el-button type="primary" size="mini" @click="edit(scope.row.id)">修改</el-button>
         </template>
       </el-table-column>
     </el-table>
 
-    <!-- 编辑窗口 -->
-    <el-dialog
-      title="新增用户"
-      :visible.sync="dialog"
-      :append-to-body="true"
-      width="600px"
-    >
-      <el-form :model="user" label-width="70px" >
-        <el-form-item label="姓名" >
-          <el-input v-model="user.userName" placeholder="对应员工姓名" ></el-input>
+    <!-- 新增窗口 -->
+    <el-dialog title="新增类别" :visible.sync="dialog" :append-to-body="true" width="600px">
+      <el-form :model="userAdd" label-width="70px">
+        <el-form-item label="层级">
+          <el-input v-model="userAdd.levelCode" placeholder></el-input>
         </el-form-item>
-        <el-form-item label="账号" >
-          <el-input v-model="user.account" placeholder="登录用户名" ></el-input>
+        <el-form-item label="部门">
+          <el-input v-model="userAdd.departmentName" placeholder></el-input>
         </el-form-item>
-        <el-form-item label="密码" >
-          <el-input v-model="user.password" placeholder="登录密码" ></el-input>
+        <el-form-item label="部门id">
+          <el-input v-model="userAdd.departmentId" placeholder></el-input>
         </el-form-item>
-        <el-form-item label="角色" >
-          <el-radio-group v-model="user.roleId" >
-            <el-radio label="2" >编辑</el-radio>
-            <el-radio label="3" >审批</el-radio>
-            <el-radio label="4" >服务管理</el-radio>
+        <el-form-item label="类别名称">
+          <el-input v-model="userAdd.categoryName" placeholder></el-input>
+        </el-form-item>
+        <el-form-item label="类别码">
+          <el-input v-model="userAdd.categoryCode" placeholder></el-input>
+        </el-form-item>
+        <el-form-item label="上一个级别的类别码">
+          <el-input v-model="userAdd.orginCategoryCode" placeholder></el-input>
+        </el-form-item>
+        
+        <!-- <el-form-item label="状态">
+          <el-input v-model="user.password" placeholder=""></el-input>
+        </el-form-item>-->
+        <!-- <el-form-item label="状态" style="margin-left:28px">
+          <el-radio-group v-model="userAdd.state">
+            <el-radio label="0">通过</el-radio>
+            <el-radio label="1">不通过</el-radio>
           </el-radio-group>
-        </el-form-item>
+        </el-form-item> -->
       </el-form>
-      <span slot="footer" class="dialog-footer" >
+      <span slot="footer" class="dialog-footer">
         <el-button @click="dialog = false">取 消</el-button>
         <el-button type="primary" @click="saveUser">保存</el-button>
       </span>
     </el-dialog>
+    <!-- 修改类别 -->
+    <el-dialog title="修改类别" :visible.sync="dialog1" :append-to-body="true" width="600px">
+      <el-form :model="userEdit" label-width="70px">
+       <el-form-item label="层级">
+          <el-input v-model="userAdd.levelCode" placeholder></el-input>
+        </el-form-item>
+        <el-form-item label="部门">
+          <el-input v-model="userAdd.departmentName" placeholder></el-input>
+        </el-form-item>
+        <el-form-item label="部门id">
+          <el-input v-model="userAdd.departmentId" placeholder></el-input>
+        </el-form-item>
+        <el-form-item label="类别名称">
+          <el-input v-model="userAdd.categoryName" placeholder></el-input>
+        </el-form-item>
+        <el-form-item label="类别码">
+          <el-input v-model="userAdd.categoryCode" placeholder></el-input>
+        </el-form-item>
+        <el-form-item label="上一个级别的类别码" label-width="100px">
+          <el-input v-model="userAdd.orginCategoryCode" placeholder></el-input>
+        </el-form-item>
 
-
+      </el-form>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="dialog1 = false">取 消</el-button>
+        <el-button type="primary" @click="saveEditUser">保存</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
 <script>
-import { getUserList, addUser, deleteUser } from '@/api/admin'
+import {
+  queryCategory,addCategory,editCategory
+} from "@/views/celebrityAdmin/severApi/category";
 export default {
-  data () {
+  data() {
     return {
       list: [],
       dialog: false,
-      user: {
-        userName: '',
-        account: '',
-        password: '',
-        roleId: '2',
+      dialog1: false,
+      userAdd: {
+        categoryName: "",
+        categoryCode: "",
+        levelCode: "",
+        departmentId: "",
+        departmentName: "",
+        orginCategoryCode: "",
+      },
+      userEdit: {
+        categoryName: "",
+        categoryCode: "",
+        levelCode: "",
+        departmentId: "",
+        departmentName: "",
+        orginCategoryCode: "",
       }
-    }
+    };
   },
-  created () {
-    this.upData()
+  created() {
+    this.upData();
   },
   methods: {
-    upData () {
-      // getUserList().then(res => {
-      //   this.list = res.data
-      // })
+    upData() {
+      let queryData = {}
+      queryData.departmentId = localStorage.getItem('departmentId')
+      queryData.departmentName = localStorage.getItem('departmentName')
+      queryCategory(queryData).then(res => {
+        this.list = res.data;
+      });
     },
-    del (i) {
-      // this.$confirm('此操作将永久删除该用户, 是否继续?', '提示', {
-      //   confirmButtonText: '确定',
-      //   cancelButtonText: '取消',
-      //   type: 'warning'
-      // }).then(() => {
-      //   deleteUser(i).then(res => {
-      //     this.$message({
-      //       type: 'success',
-      //       message: '删除成功!'
-      //     });
-      //     this.upData()
-      //   })
-      // }).catch(() => {
-      //   this.$message({
-      //     type: 'info',
-      //     message: '已取消删除'
-      //   });          
-      // });
+    edit(id) {
+      this.dialog1 = true;
+      this.userEdit.id = id;
+      queryCategory(id).then(res => {
+        // this.list = res.data;
+      });
+      
     },
-    saveUser () {
-    //   addUser(this.user).then(res => {
-    //     this.dialog = false
-    //     console.log(res)
-    //     this.upData()
-    //   })
+    saveEditUser(){
+      editCategory(this.userEdit).then(res => {
+
+      });
+      this.upData();
+    },
+    saveUser() {
+      addCategory(this.userAdd).then(res => {
+        this.dialog = false;
+        this.upData();
+      });
     }
   },
-  components: {
-
-  },
+  components: {},
 
   filters: {
     // 判断角色
-    stage (i) {
+    stage(i) {
+      if (i == 0) {
+        return "禁用";
+      }
       if (i == 1) {
-        return '管理员'
+        return "启用";
       }
-      if (i == 2) {
-        return '编辑'
-      }
-      if (i == 3) {
-        return '审批'
-      }
-      if (i == 4) {
-        return '服务管理'
-      }
+
+      // if (i == 3) {
+      //   return "审批";
+      // }
+      // if (i == 4) {
+      //   return "服务管理";
+      // }
     }
   }
-}
+};
 </script>
 <style lang="scss" scoped>
 .container {
