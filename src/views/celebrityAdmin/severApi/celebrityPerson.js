@@ -4,7 +4,7 @@ import qs from 'qs'
 //查询名人列表
 export function queryCelebrityPerson () {
   return fetch({
-    url: `/visitor/celebrityPerson/select.htm`,
+    url: `/kukacms/visitor/celebrityPerson/select.htm`,
     method: 'get',
     // data: qs.stringify(department)
   })
@@ -12,7 +12,7 @@ export function queryCelebrityPerson () {
 //新增名人信息
 export function addCelebrityPerson (add) {
   return fetch({
-    url: `/visitor/celebrityPerson/add.htm`,
+    url: `/kukacms/visitor/celebrityPerson/add.htm`,
     method: 'post',
     data: qs.stringify(add)
   })
@@ -20,7 +20,7 @@ export function addCelebrityPerson (add) {
 //根据id查寻
 export function queryIdLevel (id) {
   return fetch({
-    url: `/visitor/celebrityPerson/selectOne.htm?id=${id}`,
+    url: `/kukacms/visitor/celebrityPerson/selectOne.htm?id=${id}`,
     method: 'get',
     // data: qs.stringify(id)
   })
@@ -28,7 +28,7 @@ export function queryIdLevel (id) {
 //根据id修改
 export function editCelebrityPerson (edit) {
   return fetch({
-    url: `/visitor/celebrityPerson/update.htm`,
+    url: `/kukacms/visitor/celebrityPerson/update.htm`,
     method: 'post',
     data: qs.stringify(edit)
   })

@@ -154,7 +154,7 @@ export default {
     if (!this.$route.query.id) {
       this.status = "0";
     }
-    this.getcase();
+    // this.getcase();
   },
   // mounted () {
   //   setTimeout(() => {

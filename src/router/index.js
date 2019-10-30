@@ -217,14 +217,30 @@ export default new Router({
           component: () => import('@/views/celebrityAdmin/LevelManagement/LevelManagementList')
         },//类别管理
         {
+          path: '/test',
+          name: 'test',
+          component: () => import('@/views/celebrityAdmin/categoryManagement/test')
+        },
+        {
           path: '/categoryManagementList',
           name: 'categoryManagementList',
           component: () => import('@/views/celebrityAdmin/categoryManagement/categoryManagementList')
-        },//名人管理
+        },
+        //名人管理
         {
           path: '/celebrityPersonManagementList',
           name: 'celebrityPersonManagementList',
           component: () => import('@/views/celebrityAdmin/celebrityPersonManagement/celebrityPersonManagementList')
+        },
+        {
+          path: '/addCelebrityPersonManagement',
+          name: 'addCelebrityPersonManagement',
+          component: () => import('@/views/celebrityAdmin/celebrityPersonManagement/addCelebrityPersonManagement')
+        },
+        {
+          path: '/editCelebrityPersonManagement',
+          name: 'editCelebrityPersonManagement',
+          component: () => import('@/views/celebrityAdmin/celebrityPersonManagement/editCelebrityPersonManagement')
         },
       ]
     },

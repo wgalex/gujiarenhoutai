@@ -6,7 +6,7 @@
     </el-row>
     <el-table :data="list" border style="width: 100%">
       <el-table-column align="center" prop="id" label="序号" width="50"></el-table-column>
-      <el-table-column align="center" prop="levelCode" label="层级"></el-table-column>
+      <!-- <el-table-column align="center" prop="levelCode" label="层级"></el-table-column> -->
       <el-table-column align="center" prop="levelName" label="层级名"></el-table-column>
       <el-table-column align="center" prop="state" label="状态">
         <template slot-scope="scope">
@@ -28,9 +28,14 @@
     <!-- 新增窗口 -->
     <el-dialog title="新增层级" :visible.sync="dialog" :append-to-body="true" width="600px">
       <el-form :model="userAdd" label-width="70px">
-        <el-form-item label="层级">
+        <!-- <el-form-item label="上一层级">
+        <el-select v-model="selectedLevelCode" placeholder="请选择">
+          <el-option v-for="item in levellist" :key="item.id" :label="item.levelCode" :value="item.levelCode" :disabled="item.disabled"></el-option>
+        </el-select>
+      </el-form-item> -->
+        <!-- <el-form-item label="层级">
           <el-input v-model="userAdd.levelCode" placeholder=""></el-input>
-        </el-form-item>
+        </el-form-item> -->
         <el-form-item label="层级名">
           <el-input v-model="userAdd.levelName" placeholder=""></el-input>
         </el-form-item>
@@ -51,10 +56,15 @@
     </el-dialog>
     <!-- 修改窗口 -->
     <el-dialog title="修改层级" :visible.sync="dialog1" :append-to-body="true" width="600px">
-      <el-form :model="userEdit" label-width="70px">
-        <el-form-item label="层级">
+      <el-form :model="userEdit" label-width="90px">
+        <!-- <el-form-item label="上一层级">
+        <el-select v-model="selectedOrginLevelCode" placeholder="请选择">
+          <el-option v-for="item in levellist" :key="item.id" :label="item.levelCode" :value="item.orginLevelCode" :disabled="item.disabled"></el-option>
+        </el-select>
+      </el-form-item> -->
+        <!-- <el-form-item label="层级">
           <el-input v-model="userEdit.levelCode" placeholder=""></el-input>
-        </el-form-item>
+        </el-form-item> -->
         <el-form-item label="层级名">
           <el-input v-model="userEdit.levelName" placeholder=""></el-input>
         </el-form-item>
@@ -82,12 +92,15 @@ export default {
   data() {
     return {
       list: [],
+      levellist:[],
+      selectedOrginLevelCode:'',
       dialog: false,
       dialog1:false,
+      maxNumber:'',
       userAdd: {
         levelCode:'',
         levelName:'',
-        state:'',
+        state:'1',
       },
       userEdit: {
         levelCode:'',
@@ -101,15 +114,26 @@ export default {
   },
   methods: {
     upData() {
+      debugger
       select().then(res => {
         this.list = res.data;
+        this.maxNumber = this.list.length+1
+        console.log(this.maxNumber);
+        
+        // this.levellist = res.data
+        // for(var i in this.levellist){
+        //   if(this.levellist[i].state === 1){
+        //     this.levellist[i].disabled = false
+        //   }else{
+        //     this.levellist[i].disabled = true
+        //   }
+        // }
       });
     },
     edit(id) {
       this.dialog1 = true
       queryIdLevel(id).then(res => {
       let resData = res.data
-      this.userEdit.levelCode = resData.levelCode
       this.userEdit.levelName = resData.levelName
       this.userEdit.state = resData.state.toString()
       });
@@ -123,6 +147,7 @@ export default {
     })
     },
     saveUser() {
+      this.userAdd.levelCode = this.maxNumber
       addLevel(this.userAdd).then(res => {
         this.dialog = false
         this.upData()

@@ -1,7 +1,7 @@
 import fetch from '@/api/fetch.js'
 import qs from 'qs'
 
-//根据id获取
+//查寻所有
 export function select () {
   return fetch({
     url: `/kukacms/visitor/level/select.htm`,
