@@ -48,6 +48,9 @@
              <router-link :to="{name: 'test'}">
                 <el-menu-item index="3-2">类别列表</el-menu-item>
             </router-link>
+             <router-link :to="{name: 'test1'}">
+                <el-menu-item index="3-3">类别列表</el-menu-item>
+            </router-link>
             <!-- <router-link :to="{name: 'branchList'}" >
                 <el-menu-item index="3-3">技术部账号</el-menu-item>
             </router-link>

@@ -17,19 +17,19 @@ export function addCategory (add) {
     data: qs.stringify(add)
   })
 }
-//根据id查寻
-// export function queryIdLevel (id) {
-//   return fetch({
-//     url: `/visitor/level/selectdetail.htm?id=${id}`,
-//     method: 'get',
-//     // data: qs.stringify(id)
-//   })
-// }
 //根据id修改
 export function editCategory (edit) {
   return fetch({
     url: `/kukacms/visitor/category/update.htm`,
     method: 'post',
     data: qs.stringify(edit)
+  })
+}
+//树装类别格式
+export function selectmerge (id) {
+  return fetch({
+    url: `/kukacms/visitor/category/selectmerge.htm`,
+    method: 'post',
+    data: qs.stringify(id)
   })
 }

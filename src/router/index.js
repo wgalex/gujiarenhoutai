@@ -222,6 +222,11 @@ export default new Router({
           component: () => import('@/views/celebrityAdmin/categoryManagement/test')
         },
         {
+          path: '/test1',
+          name: 'test1',
+          component: () => import('@/views/celebrityAdmin/categoryManagement/test1')
+        },
+        {
           path: '/categoryManagementList',
           name: 'categoryManagementList',
           component: () => import('@/views/celebrityAdmin/categoryManagement/categoryManagementList')
