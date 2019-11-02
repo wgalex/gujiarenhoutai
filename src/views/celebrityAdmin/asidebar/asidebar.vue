@@ -22,34 +22,34 @@
                 <el-menu-item index="1-4">增加部门</el-menu-item>
             </router-link> -->
         </el-submenu>
-        <el-submenu index="2">
-          <template slot="title">
+        <!-- <el-submenu index="2"> -->
+          <!-- <template slot="title">
             <i class="el-icon-menu"></i>
             <span slot="title">层级管理</span>
           </template>
             <router-link :to="{name: 'LevelManagementList'}">
                 <el-menu-item index="2-1">层级列表</el-menu-item>
-            </router-link>
+            </router-link> -->
             <!-- <router-link :to="{name: 'branchList'}" >
                 <el-menu-item index="2-3">技术部账号</el-menu-item>
             </router-link>
               <router-link :to="{name: 'branchListadd'}">
                 <el-menu-item index="3-4">增加部门</el-menu-item>
             </router-link> -->
-        </el-submenu>
-        <el-submenu index="3">
+        <!-- </el-submenu> -->
+        <el-submenu index="2">
           <template slot="title">
             <i class="el-icon-menu"></i>
             <span slot="title">类别管理</span>
           </template>
-            <router-link :to="{name: 'categoryManagementList'}">
+            <!-- <router-link :to="{name: 'categoryManagementList'}">
                 <el-menu-item index="3-1">类别列表</el-menu-item>
-            </router-link>
-             <router-link :to="{name: 'test'}">
+            </router-link> -->
+             <!-- <router-link :to="{name: 'test'}">
                 <el-menu-item index="3-2">类别列表</el-menu-item>
-            </router-link>
+            </router-link> -->
              <router-link :to="{name: 'test1'}">
-                <el-menu-item index="3-3">类别列表</el-menu-item>
+                <el-menu-item index="3-1">类别列表</el-menu-item>
             </router-link>
             <!-- <router-link :to="{name: 'branchList'}" >
                 <el-menu-item index="3-3">技术部账号</el-menu-item>
@@ -58,7 +58,7 @@
                 <el-menu-item index="3-4">增加部门</el-menu-item>
             </router-link> -->
         </el-submenu>
-        <el-submenu index="4">
+        <el-submenu index="3">
           <template slot="title">
             <i class="el-icon-menu"></i>
             <span slot="title">名人管理</span>

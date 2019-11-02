@@ -61,7 +61,6 @@
           :limit="1"
         >
           <el-button size="mini" type="primary" style="width: 96px; margin-left:300px">自定义封面</el-button>
-           
         </el-upload>
         <el-button type="primary" @click="save" style="width: 96px; margin-left:300px;margin-top:10px;" size="mini">保存</el-button>
        
@@ -295,6 +294,7 @@ export default {
       console.log(file, fileList);
     },
     handlePreview(file) {
+      debugger
       console.log(file);
     },
     handleExceed(files, fileList) {
@@ -308,6 +308,7 @@ export default {
       return this.$confirm(`确定移除 ${file.name}？`);
     },
     handleSuccess(response, file) {
+      debugger
       // console.log(file)
       console.log(response.data[1]);
       this.covers = response.data[1];

@@ -2,11 +2,11 @@ import fetch from '@/api/fetch.js'
 import qs from 'qs'
 
 //查询名人列表
-export function queryCelebrityPerson () {
+export function queryCelebrityPerson (query) {
   return fetch({
     url: `/kukacms/visitor/celebrityPerson/select.htm`,
-    method: 'get',
-    // data: qs.stringify(department)
+    method: 'post',
+    data: qs.stringify(query)
   })
 }
 //新增名人信息

@@ -3,13 +3,13 @@
     <div>
       <el-tree
         :data="treeList"
-        show-checkbox
-        node-key="levelCode"
+        node-key="id"
         default-expand-all
         :expand-on-click-node="false"
         :props="defaultProps"
         v-if="isLoadingTree"
         :render-content="renderContent"
+        @node-click= 'test'
       ></el-tree>
     </div>
     <el-dialog title="新增类别" :visible.sync="dialog" :append-to-body="true" width="800px">
@@ -19,15 +19,15 @@
           <el-option v-for="item in levellist" :key="item.id" :label="item.levelName" :value="item.levelCode" :disabled="item.disabled"></el-option>
         </el-select>
         </el-form-item>-->
-        <el-form-item label="部门">
+        <!-- <el-form-item label="部门">
           <el-input v-model="userAdd.departmentName" disabled></el-input>
-        </el-form-item>
+        </el-form-item> -->
         <!-- <el-form-item label="上一类别">
           <el-select v-model="New0rginCategoryCode" placeholder="请选择">
           <el-option v-for="item in categoryList" :key="item.id" :label="item.categoryName" :value="item.categoryCode" :disabled="item.disabled"></el-option>
         </el-select>
         </el-form-item>-->
-        <el-form-item label="类别名称">
+        <el-form-item label="名称">
           <el-input v-model="userAdd.categoryName" placeholder></el-input>
         </el-form-item>
       </el-form>
@@ -36,7 +36,7 @@
         <el-button type="primary" @click="saveUser">保存</el-button>
       </span>
     </el-dialog>
-    <el-dialog title="修改类别" :visible.sync="dialog1" :append-to-body="true" width="800px">
+    <el-dialog title="修改" :visible.sync="dialog1" :append-to-body="true" width="800px">
       <el-form :model="userEdit" label-width="300px">
         <!-- <el-form-item label="层级">
         <el-select v-model="selectedLevelCode" placeholder="请选择">
@@ -51,7 +51,7 @@
           <el-option v-for="item in categoryList" :key="item.id" :label="item.categoryName" :value="item.categoryCode" :disabled="item.disabled"></el-option>
         </el-select>
         </el-form-item>-->
-        <el-form-item label="类别名称">
+        <el-form-item label="名称">
           <el-input v-model="userEdit.categoryName" placeholder></el-input>
         </el-form-item>
       </el-form>
@@ -69,8 +69,8 @@ import {
   editCategory,
   selectmerge
 } from "@/views/celebrityAdmin/severApi/category";
+import { select ,addLevel,queryIdLevel,editLevel} from "@/views/celebrityAdmin/severApi/LevelApi";
 let id = 1000;
-
 export default {
   data() {
     return {
@@ -98,13 +98,19 @@ export default {
         departmentId: "",
         departmentName: "",
         orginCategoryCode: "",
-        id:''
       },
       selected0rginCategoryCode: "",
       selectedLevelCode: "",
       New0rginCategoryCode: "",
-      NewLevelCode: ""
+      NewLevelCode: "",
+      addLevelFlag:0,
+      maxLevel:'',
     };
+  },
+  created(){
+    select().then(res => {
+        this.maxLevel = res.data.length
+    });
   },
   mounted() {
     this.upData();
@@ -112,6 +118,7 @@ export default {
   methods: {
     upData() {
       let queryData = {};
+      this.treeList = []
       queryData.departmentName = localStorage.getItem("departmentName");
       selectmerge(queryData).then(res => {
         this.treeList.push(JSON.parse(JSON.stringify(res.data)));
@@ -119,11 +126,60 @@ export default {
       });
     },
     append(data) {
-      this.dialog = true;
+      debugger
+      if(this.maxLevel == 1 && data.categoryCode == ''){
+          this.userAdd.categoryCode = this.randomNum(1,100000)
+          this.userAdd.departmentName = localStorage.getItem("departmentName");
+          this.userAdd.departmentId = localStorage.getItem("departmentId");
+          this.userAdd.orginCategoryCode = '';
+          this.userAdd.levelCode = 1;
+          this.dialog = true;
+      }else{
+          this.userAdd.categoryName = '';
+          this.userAdd.categoryCode = this.randomNum(1,100000)
+          this.userAdd.departmentName = localStorage.getItem("departmentName");
+          this.userAdd.departmentId = localStorage.getItem("departmentId");
+          this.userAdd.orginCategoryCode = data.categoryCode;
+          this.userAdd.levelCode = data.levelCode + 1;
+          if(this.maxLevel < this.userAdd.levelCode ){
+                this.addLevelFlag = 1
+        }
+        this.dialog = true; 
+      }
     },
-    saveUser() {},
+    saveUser() {
+      debugger
+      if(this.addLevelFlag == 1){
+        var addLevelData = {}
+        addLevelData.levelCode = this.userAdd.levelCode
+        addLevelData.state = 1
+        addLevelData.levelName = '第'+ this.userAdd.levelCode +'层级'  
+            addLevel(addLevelData).then(res => {
+                addCategory(this.userAdd).then(res => {
+                  this.$message({
+                  type: 'success',
+                  message: '保存成功!'
+                });
+                setTimeout(() => {  
+                  this.upData();
+                  this.dialog = false;
+                }, 500);
+          });  
+      })
+    }else{
+      addCategory(this.userAdd).then(res => {
+              this.$message({
+            type: 'success',
+            message: '保存成功!'
+          });
+           setTimeout(() => {  
+                  this.upData();
+                  this.dialog = false;
+            }, 500);
+      });
+    }
+  },
     treeoEdit(data) {
-      // debugger;
       this.dialog1 = true;
       this.userEdit.categoryName = data.categoryName;
       this.userEdit.categoryCode = data.categoryCode;
@@ -132,13 +188,21 @@ export default {
       this.userEdit.departmentId = localStorage.getItem("departmentId");
       this.userEdit.orginCategoryCode = data.orginCategoryCode;
       this.userEdit.id = data.id;
-     
     },
     saveEditUser() {
       editCategory(this.userEdit).then(res => {
-        console.log(res);
+       this.$message({
+          type: 'success',
+          message: '修改成功!'
+        });
       });
-      // this.upData();
+      setTimeout(() => {  
+        this.upData();
+         this.dialog1 = false;
+      }, 500);
+    },
+    test(){
+      alert(123)
     },
     //生成从minNum到maxNum的随机数
     randomNum(minNum, maxNum) {
@@ -165,7 +229,9 @@ export default {
             <el-button size="mini" type="text" on-click={() => this.append(data)}>
               新增
             </el-button>
-            
+            <el-button size="mini" type="text" on-click={() => this.jump(data)}>
+              名人列表
+            </el-button>
           </span>
         </span>
       );

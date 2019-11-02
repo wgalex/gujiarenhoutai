@@ -211,26 +211,27 @@ export default new Router({
           component: () => import('@/views/celebrityAdmin/peopleManagement/branchList')
         },
         //级别管理
-        {
-          path: '/LevelManagementList',
-          name: 'LevelManagementList',
-          component: () => import('@/views/celebrityAdmin/LevelManagement/LevelManagementList')
-        },//类别管理
-        {
-          path: '/test',
-          name: 'test',
-          component: () => import('@/views/celebrityAdmin/categoryManagement/test')
-        },
+        // {
+        //   path: '/LevelManagementList',
+        //   name: 'LevelManagementList',
+        //   component: () => import('@/views/celebrityAdmin/LevelManagement/LevelManagementList')
+        // },
+        //类别管理
+        // {
+        //   path: '/test',
+        //   name: 'test',
+        //   component: () => import('@/views/celebrityAdmin/categoryManagement/test')
+        // },
         {
           path: '/test1',
           name: 'test1',
           component: () => import('@/views/celebrityAdmin/categoryManagement/test1')
         },
-        {
-          path: '/categoryManagementList',
-          name: 'categoryManagementList',
-          component: () => import('@/views/celebrityAdmin/categoryManagement/categoryManagementList')
-        },
+        // {
+        //   path: '/categoryManagementList',
+        //   name: 'categoryManagementList',
+        //   component: () => import('@/views/celebrityAdmin/categoryManagement/categoryManagementList')
+        // },
         //名人管理
         {
           path: '/celebrityPersonManagementList',
@@ -242,11 +243,11 @@ export default new Router({
           name: 'addCelebrityPersonManagement',
           component: () => import('@/views/celebrityAdmin/celebrityPersonManagement/addCelebrityPersonManagement')
         },
-        {
-          path: '/editCelebrityPersonManagement',
-          name: 'editCelebrityPersonManagement',
-          component: () => import('@/views/celebrityAdmin/celebrityPersonManagement/editCelebrityPersonManagement')
-        },
+        // {
+        //   path: '/editCelebrityPersonManagement',
+        //   name: 'editCelebrityPersonManagement',
+        //   component: () => import('@/views/celebrityAdmin/celebrityPersonManagement/editCelebrityPersonManagement')
+        // },
       ]
     },
     {
