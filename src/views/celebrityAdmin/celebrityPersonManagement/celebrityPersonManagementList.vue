@@ -13,19 +13,40 @@
     </el-row>
     <el-table :data="list" border style="width: 100%">
       <el-table-column align="center" type="index" label="序号" width="50" prop="id"></el-table-column>
-      <el-table-column align="center" prop="updateby" label="更新人"></el-table-column>
       <el-table-column align="center" prop="personName" label="获奖人员"></el-table-column>
       <el-table-column align="center" prop="personCode" label="工号"></el-table-column>
-      <el-table-column align="center" prop="awardName" label="奖励名"></el-table-column>
-      <el-table-column align="center" prop="photoPath" label="头像"></el-table-column>
-      <el-table-column align="center" prop="photoPath" label="附件"></el-table-column>
+      <el-table-column align="center" prop="categoryName" label="奖励名"></el-table-column>
+      <!-- <el-table-column align="center" prop="headPath" label="头像"></el-table-column> -->
+      <el-table-column align="center" prop="headPath" label="头像" width="300" style="font-size: 8px">
+         <template slot-scope="scope" v-if="scope.row.headPath">
+        <div class="pic-box">
+            <img :src="scope.row.headPath" alt class="pic" v-image-preview>
+            <!-- <el-button type="primary" size="mini"><a :href="scope.row.headPath" style="text-decoration: none;color:#fff">文件</a></el-button> -->
+        </div>
+      </template>
+      </el-table-column>
+      <el-table-column align="center" prop="photoPath" label="图片附件" >
+         <template slot-scope="scope">
+        <i class="el-icon-picture" @click="jumpphoto(scope.row.photoPath)" v-if="scope.row.photoPath"></i>
+         </template>
+      </el-table-column>
+      <el-table-column align="center"  label="视频附件" >
+        <template slot-scope="scope">
+          <!-- <el-button  type="primary" size="mini" @click="pushDoc">消息推送</el-button> -->
+          <!-- <el-button type="primary" size="mini" @click="editor(scope.row)">编辑</el-button> -->
+          <i class="el-icon-video-play"  @click="jumpVideo(scope.row.filePath)" v-if="scope.row.filePath"></i>
+          <!-- <el-button type="danger" size="mini" @click="add(scope.row.id)">新增</el-button> -->
+        </template>
+      </el-table-column>
       <el-table-column align="center" prop="description" label="描述"></el-table-column>
+      <el-table-column align="center" prop="createby" label="创建人"></el-table-column>
       <el-table-column align="center" label="创建时间">
         <template slot-scope="scope">
           <p>{{scope.row.createtime | formatDate}}</p>
         </template>
       </el-table-column>
-      <el-table-column align="center" prop="createby" label="创建人"></el-table-column>
+      <el-table-column align="center" prop="updateby" label="更新人"></el-table-column>
+
       <el-table-column align="center" label="更新时间">
         <template slot-scope="scope">
           <p>{{scope.row.updatetime | formatDate}}</p>
@@ -40,7 +61,7 @@
       <el-table-column align="center" label="操作" width="400">
         <template slot-scope="scope">
           <!-- <el-button  type="primary" size="mini" @click="pushDoc">消息推送</el-button> -->
-          <el-button type="primary" size="mini" @click="editor(scope.row.id)">编辑</el-button>
+          <el-button type="primary" size="mini" @click="editor(scope.row)">编辑</el-button>
           <!-- <el-button type="danger" size="mini" @click="add(scope.row.id)">新增</el-button> -->
         </template>
       </el-table-column>
@@ -127,13 +148,32 @@ export default {
       content: "",
       bannerUrl: null,
       covers: null,
-      editId: ""
+      catorObj:'',
+      editId: "",
+      
     };
   },
   created() {
+//     categoryCode: "43204"
+// categoryName: "仓储部"
+// children: [{…}]
+// createtime: 1572581944000
+// departmentId: "01"
+// departmentName: "公司主管理员账号"
+// id: 82
+// levelCode: 2
+// levelName: "第2层级"
+// orginCategoryCode: "43090"
+// orginCategoryName: "管家名人堂超级管理员账号"
+    // 
+    // this.$route.query.catorObj
+    
     let queryData = {}
-    queryData.departmentName = localStorage.getItem("departmentName");
-    queryData.departmentId = localStorage.getItem("departmentId");
+    // this.catorObj = this.$route.query.catorObj
+    // queryData.departmentName = localStorage.getItem("departmentName");
+    // queryData.departmentId = localStorage.getItem("departmentId");
+    debugger
+    queryData.id = this.$route.query.catorObj.id
      queryCelebrityPerson(queryData).then(res => {
        this.list = res.data.itemList
      })
@@ -191,23 +231,34 @@ export default {
     //     });
     // },
     handleSuccess(res) {
-      console.log(res);
+      // console.log(res);
       this.covers = res.data[1];
       this.bannerUrl = res.data[1];
       this.$refs.upload.clearFiles();
     },
-    editor(id) {
+    editor(row) {
+      debugger
       this.$router.push({
-        name: "addCelebrityPersonManagement",
+        name: "editCelebrityPersonManagement",
         query: {
-          id: id
+          row: row
         }
       });
     },
     add() {
+      let catorObjs = this.$route.query.catorObj
       this.$router.push({
         name: "addCelebrityPersonManagement",
+        query: {
+          catorObjs: catorObjs
+        }
       });
+    },
+    jumpVideo(filePath){
+      window.open(filePath)
+    },
+    jumpphoto(photoPath){
+      window.open(photoPath)
     },
     // saveEdit() {
     //   editcase(
@@ -305,17 +356,15 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.pic-box {
-  width: 100px;
-  height: 80px;
-  // overflow: hidden;
-  // position: relative;
-}
-.pic {
-  width: 100%;
-  height: 100%;
-  // position: absolute;
-  // top: 50%;
-  // transform: translate3d(0, -50%, 0);
+.pic-box{
+  border: 0;
+  width: 50px;
+  height: 50px;
+  overflow: hidden;
+  .pic{
+    width: 100%;
+    height: 100%;
+    
+  }
 }
 </style>

@@ -9,7 +9,6 @@
         :props="defaultProps"
         v-if="isLoadingTree"
         :render-content="renderContent"
-        @node-click= 'test'
       ></el-tree>
     </div>
     <el-dialog title="新增类别" :visible.sync="dialog" :append-to-body="true" width="800px">
@@ -126,7 +125,6 @@ export default {
       });
     },
     append(data) {
-      debugger
       if(this.maxLevel == 1 && data.categoryCode == ''){
           this.userAdd.categoryCode = this.randomNum(1,100000)
           this.userAdd.departmentName = localStorage.getItem("departmentName");
@@ -148,7 +146,6 @@ export default {
       }
     },
     saveUser() {
-      debugger
       if(this.addLevelFlag == 1){
         var addLevelData = {}
         addLevelData.levelCode = this.userAdd.levelCode
@@ -201,9 +198,18 @@ export default {
          this.dialog1 = false;
       }, 500);
     },
-    test(){
-      alert(123)
+    jump(data){
+      console.log(data);
+      this.$router.push({
+        name: "celebrityPersonManagementList",
+        query: {
+          catorObj: data
+        }
+      });
     },
+    // test(){
+    //   alert(123)
+    // },
     //生成从minNum到maxNum的随机数
     randomNum(minNum, maxNum) {
       switch (arguments.length) {

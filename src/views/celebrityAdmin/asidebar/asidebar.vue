@@ -58,21 +58,21 @@
                 <el-menu-item index="3-4">增加部门</el-menu-item>
             </router-link> -->
         </el-submenu>
-        <el-submenu index="3">
+        <!-- <el-submenu index="3">
           <template slot="title">
             <i class="el-icon-menu"></i>
             <span slot="title">名人管理</span>
           </template>
             <router-link :to="{name: 'celebrityPersonManagementList'}">
                 <el-menu-item index="4-1">名人列表</el-menu-item>
-            </router-link>
+            </router-link> -->
             <!-- <router-link :to="{name: 'branchList'}" >
                 <el-menu-item index="4-3">技术部账号</el-menu-item>
             </router-link>
               <router-link :to="{name: 'branchListadd'}">
                 <el-menu-item index="4-4">增加部门</el-menu-item>
             </router-link> -->
-        </el-submenu>
+        <!-- </el-submenu> -->
         <!-- <router-link :to="{name: 'complaintEdit'}" >
           <el-menu-item index="/complaintIndex/complaintEdit" >投诉管理</el-menu-item>
         </router-link> -->

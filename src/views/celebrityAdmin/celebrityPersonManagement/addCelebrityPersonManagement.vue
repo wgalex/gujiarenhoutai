@@ -12,7 +12,7 @@
         <el-input v-model.trim="addPerson.personCode"></el-input>
       </el-form-item>
       <el-form-item label="标题" style="margin-top:10px">
-        <el-input v-model.trim="addPerson.title"></el-input>
+        <el-input v-model.trim="addPerson.tittle"></el-input>
       </el-form-item>
       <el-form-item label="描述" style="margin-top:10px">
         <el-input v-model.trim="addPerson.description"></el-input>
@@ -49,7 +49,7 @@
           :on-exceed="handleExceed11"
           :show-file-list="true"
           multiple
-          :limit="3"
+          :limit="1"
         >
           <el-button size="mini" type="primary" style="width: 96px">上传视频</el-button>
         </el-upload>
@@ -65,7 +65,7 @@
           :on-success="handleSuccess12"
           :show-file-list="true"
           multiple
-          :limit="3"
+          :limit="1"
           :on-exceed="handleExceed12"
         >
           <el-button size="mini" type="primary" style="width: 96px">上传图片</el-button>
@@ -102,12 +102,12 @@ export default {
                 personName:'',
                 personCode:'',
                 tittle:'',
-                awardId:'',
-                awardName:'',
                 filePath:'',
                 photoPath:'',
+                headPath:'',
                 createby:'',
-                description:'',
+                categoryCode:'',
+                updateby:'',
             },
       show: false,
       fileList:[],
@@ -136,27 +136,52 @@ export default {
     };
   },
   created() {
+  this.addPerson.categoryName = this.$route.query.catorObjs.categoryName
   },
   methods: {
     save() {
-      
+//       categoryCode: 899
+// categoryName: "荣耀奖"
+// createby: "顾家管理员"
+// createtime: 1572590951000
+// description: "第一次获奖"
+// filePath: "0012"
+// id: 7
+// personCode: "0991"
+// personName: "小绿蛇"
+// photoPath: "00221"
+// tittle: "获得首届荣耀奖"
+// updateby: "顾家管理"
+// updatetime: 1572590951000
+this.addPerson.filePath = this.filePath
+this.addPerson.photoPath = this.photoPath
+this.addPerson.headPath = this.headPath
+this.addPerson.categoryCode = this.$route.query.catorObjs.categoryCode
+this.addPerson.createby = localStorage.getItem("departmentName")
+this.addPerson.updateby = localStorage.getItem("departmentName")
+console.log(this.addPerson);
+return
+addCelebrityPerson(this.addPerson).then(res => {
+  this.$router.go(-1)
+  
+})
+
     },
     handlePreview(file) {
       console.log(file);
     },
     // 上传图片
     handleRemove(file, fileList) {
+      this.headPath = ''
       console.log(file, fileList);
     },
     handleExceed(files, fileList) {
         this.$message.warning(`当前限制选择 3 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`);
       },
     beforeRemove(file, fileList) {
-      debugger
       return this.$confirm(`确定移除 ${file.name}？`);
     },
     handleSuccess(response, file) {
-      debugger
       // console.log(file)
       console.log(response.data[1]);
       this.covers = response.data[1];
@@ -167,13 +192,13 @@ export default {
     },
     // 上传图片
     handleRemove12(file, fileList) {
-      console.log(file, fileList);
+      this.photoPath = ''
+      // console.log(file, fileList);
     },
     handleExceed12(files, fileList) {
         this.$message.warning(`当前限制选择 3 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`);
       },
     beforeRemove12(file, fileList) {
-      debugger
       return this.$confirm(`确定移除 ${file.name}？`);
     },
     handleSuccess12(response, file) {
@@ -185,13 +210,13 @@ export default {
     },
     // 上传图片
     handleRemove11(file, fileList) {
+      this.filePath = ''
       console.log(file, fileList);
     },
     handleExceed11(files, fileList) {
         this.$message.warning(`当前限制选择 3 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`);
       },
     beforeRemove11(file, fileList) {
-      debugger
       return this.$confirm(`确定移除 ${file.name}？`);
     },
     handleSuccess11(response, file) {

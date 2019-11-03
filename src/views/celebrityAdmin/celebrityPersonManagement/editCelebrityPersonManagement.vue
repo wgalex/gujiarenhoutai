@@ -1,57 +1,31 @@
 <template>
-  <div class="form-box">
-    <h1 style="margin: 20px 0; font-size: 24px">案例添加</h1>
-    <el-form label-width="110px" style="width: 800px" ref="newsform">
+  <div class="form-box" style="width:1200px">
+    <h1 style="margin: 20px 0; font-size: 24px">获奖人员添加</h1>
+    <el-form label-width="110px" style="width: 800px;float:left" ref="newsform">
+      <el-form-item label="获奖名称" style="margin-top:10px">
+        <el-input v-model.trim="editPerson.categoryName" disabled></el-input>
+      </el-form-item>
+      <el-form-item label="人员名称" style="margin-top:10px">
+        <el-input v-model.trim="editPerson.personName"></el-input>
+      </el-form-item>
+     <el-form-item label="人员工号" style="margin-top:10px">
+        <el-input v-model.trim="editPerson.personCode"></el-input>
+      </el-form-item>
       <el-form-item label="标题" style="margin-top:10px">
-        <el-input v-model.trim="title"></el-input>
+        <el-input v-model.trim="editPerson.tittle"></el-input>
       </el-form-item>
-     
-      <el-form-item label="审核设置" style="margin-left:28px">
-        <el-radio-group v-model="status">
-          <el-radio label="0">通过</el-radio>
-          <el-radio label="1">不通过</el-radio>
-        </el-radio-group>
+      <el-form-item label="描述" style="margin-top:10px">
+        <el-input v-model.trim="editPerson.description"></el-input>
       </el-form-item>
-
-      <!-- 文本编辑器 -->
-      <tiny @input="saveEditor" class="tiny" v-model="content">
-        <!-- 上传封面图 -->
-
-       
-
-        <!-- <el-row class="mt" >
-              <el-button size="mini" type="primary" style="width: 96px;"  @click="show=true" >裁剪封面图</el-button>
-        </el-row>-->
-
-        <!-- <el-button class="mt" size="mini" type="primary" @click="select" style="width: 96px;" >从正文选择</el-button> -->
-        <el-row class="mt">
-          <p>封面预览</p>
-        </el-row>
-        <el-row v-if="this.covers">
-          <div style="width: 200px">
-            <img :src=" this.covers" alt style="width: 100%">
-          </div>
-        </el-row>
-      </tiny>
-
-      <!-- 保存操作 -->
-      <!-- <div class="footer-nav">
-        <el-button type="success" class="btn" @click="backList" >返回</el-button>
-        <el-button type="warning" class="btn" @click="onSubmit" >保存待发送</el-button>
-      </div>-->
     </el-form>
-    <cropper
-      url="/kukacms/visitor/picUpload.htm?type=2"
-      field="files"
-      @crop-upload-success="setImg"
-      :value="show"
-      @close="show=false"
-    ></cropper>
-   
-     <el-upload
+    <div  style="float:left;width: 200px;height:200px;margin-left:10px">
+        <img :src=" this.covers" alt style="width: 200px;height:200px">
+    </div>
+    <div style="float:right;width:155px">
+    <el-upload 
           class="upload-demo mt"
           name="files"
-          action="/kukacms/visitor/picUpload.htm?type=8"
+          action="/kukacms/visitor/picUpload.htm?type=10"
           :on-preview="handlePreview"
           :on-remove="handleRemove"
           :before-remove="beforeRemove"
@@ -60,67 +34,83 @@
           multiple
           :limit="1"
         >
-          <el-button size="mini" type="primary" style="width: 96px; margin-left:300px">自定义封面</el-button>
-           
+          <el-button size="mini" type="primary" style="width: 96px">上传头像</el-button>
         </el-upload>
-        <el-button type="primary" @click="save" style="width: 96px; margin-left:300px;margin-top:10px;" size="mini">保存</el-button>
-       
+    </div>
+    <div style="float:right;margin-left:35px;margin-top:20px ;width:155px">
+    <el-upload 
+          class="upload-demo mt"
+          name="files"
+          action="/kukacms/visitor/picUpload.htm?type=11"
+          :on-preview="handlePreview11"
+          :on-remove="handleRemove11"
+          :before-remove="beforeRemove11"
+          :on-success="handleSuccess11"
+          :on-exceed="handleExceed11"
+          :show-file-list="true"
+          multiple
+          :limit="1"
+        >
+          <el-button size="mini" type="primary" style="width: 96px">上传视频</el-button>
+        </el-upload>
+    </div>
+    <div style="float:right;margin-left:35px;margin-top:20px;width:155px">
+    <el-upload 
+          class="upload-demo mt"
+          name="files"
+          action="/kukacms/visitor/picUpload.htm?type=12"
+          :on-preview="handlePreview12"
+          :on-remove="handleRemove12"
+          :before-remove="beforeRemove12"
+          :on-success="handleSuccess12"
+          :show-file-list="true"
+          multiple
+          :limit="1"
+          :on-exceed="handleExceed12"
+        >
+          <el-button size="mini" type="primary" style="width: 96px">上传图片</el-button>
+        </el-upload>
+    </div>
+    <div style="float:right;margin-left:35px;margin-top:10px;width:155px">
+      <el-button type="primary" @click="save"  size="mini">保存</el-button>
+    </div>
+   
+    
   </div>
 </template>
 
 <script>
 import cropper from "./ImageCroppers/index";
 // import { getTypeAuditList, addNews, updataMobile, updataNews } from './news'
-import {
-  getcasebyId,
-  getcasebytitle,
-  delcase,
-  editcase,
-  addcase
-} from "@/views/complaint/severApi/caseServer";
+import { queryCelebrityPerson ,addCelebrityPerson,queryIdLevel,editCelebrityPerson} from "@/views/celebrityAdmin/severApi/celebrityPerson";
 import { formatDate } from "@/common/js/date";
 import tiny from "@/components/Tinymce/index";
-import { getMagazinePage } from "@/api/magList";
+// import { getMagazinePage } from "@/api/magList";
 export default {
   props: {
     news: {
       type: Object,
       default: () => {
         return {
-          id: "",
-          // 标题
-          name: "",
-          // 关键词
-          keywords: "",
-          // 来源
-          source: "",
-          // 期刊
-          magazine: "",
-          // 栏目
-          typeFullPath: "",
-          // 资讯类型
-          contentType: "0",
-          // 客户端
-          clients: "a",
-          // 摘要
-          summary: "",
-          // 评论设置
-          commentAuditRequired: "0",
-          // 不明参数
-          commentMaxValue: 5,
-          commentAllowed: 1,
-          dianzanAllowed: 0,
-          typeId: "",
-          position: "0",
-          mobileContent: "",
-          covers: ""
         };
       }
     }
   },
   data() {
     return {
+      editPerson:{
+                personName:'',
+                personCode:'',
+                tittle:'',
+                filePath:'',
+                photoPath:'',
+                headPath:'',
+                createby:'',
+                categoryCode:'',
+                updateby:'',
+            },
       show: false,
+      fileList:[],
       rules: {
         name: [{ required: true, message: "请输入标题", trigger: "blur" }],
         magazine: [
@@ -134,176 +124,70 @@ export default {
         contentType: [
           { required: true, message: "请选择资讯类型", trigger: "blur" }
         ],
-        clients: [{ required: true, message: "请选择客户端", trigger: "blur" }],
-        summary: [{ required: true, message: "请输入摘要", trigger: "blur" }]
       },
       searchList: [],
-      magazine: "",
-      typeList: "",
       type: "",
       fileList: [],
-      dialogFormVisible: false,
-      picList: [],
-      index: "",
-      status: "",
-      content: "",
       covers: "",
-      imhurl: "",
-      title: ""
+      imageUrl: '',
+      filePath:'',
+      photoPath:'',
+      headPath:'',
     };
   },
   created() {
-    // this.type = this.news.typeId
-    // this._getMagazineList()
-    if (!this.$route.query.id) {
-      this.status = "0";
-    }
-    this.getcase();
+    debugger
+    let lastRow = this.$route.query.row
+    this.editPerson.categoryName = lastRow.categoryName
+    this.editPerson.personName = lastRow.personName
+    this.editPerson.personCode = lastRow.personCode
+    this.editPerson.tittle = lastRow.tittle
+    this.editPerson.description = lastRow.description
+    this.filePath = lastRow.filePath
+    this.photoPath = lastRow.photoPath
+    this.headPath = lastRow.headPath
+    this.covers = lastRow.headPath
   },
-  // mounted () {
-  //   setTimeout(() => {
-  //     this.magazine = this.news.magazine
-  //     this.type = this.news.typeName
-
-  //   }, 2000)
-
-  // },
   methods: {
-    //編輯頁回填
-    getcase() {
-      getcasebyId(this.$route.query.id).then(res => {
-        // console.log(res)
-        this.content = res.data.content;
-        this.covers = res.data.covers;
-        this.title = res.data.title;
-        this.status = res.data.status + "";
-      });
-    },
-
-   
     save() {
-      if (this.$route.query.id) {
-        const editSubmit = {};
-        editSubmit.title = this.title;
-        editSubmit.content = this.content;
-        editSubmit.status = this.status;
-        editSubmit.covers = this.covers;
-        editSubmit.id = this.$route.query.id;
-        if (
-            this.title == "" ||
-            this.content == "" ||
-            this.status == "" ||
-            this.covers == ""
-          ) {
-            this.$alert("标题,或封面,审核设置不能为空", {
-              confirmButtonText: "确定"
-            });
-            return false;
-          }
-        editcase(
-          editSubmit
-        ).then(res => {
-          console.log(res);
-          
-          if (res.code == 1000) {
-            this.$message({
-              message: "修改成功",
-              type: "success"
-            });
-            this.$router.push({
-              path: "listCaseComp"
-            });
-          }
-        });
-      } else {
-        const addSubmit = {};
-        addSubmit.title = this.title;
-        addSubmit.content = this.content;
-        addSubmit.status = this.status;
-        addSubmit.covers = this.covers;
-        // editSubmit.id =  this.$route.query.id
-         if (
-            this.title == "" ||
-            this.content == "" ||
-            this.status == "" ||
-            this.covers == ""
-          ) {
-            this.$alert("标题,或封面,评论设置不能为空", {
-              confirmButtonText: "确定"
-            });
-            return false;
-          }
-        addcase(addSubmit).then(res => {
-          console.log(res);
-          if (res.code == 1000) {
-            this.$message({
-              message: "保存成功",
-              type: "success"
-            });
-            this.$router.push({
-              path: "listCaseComp"
-            });
-          }
-        });
-      }
-    },
-    // else {
-    //   this.$refs.newsform.validate(valid => {
-    //     if (valid) {
-    //       console.log(this.news)
-    //       this.news.position = 2
-    //       addNews(this.news).then(res => {
-    //         this.$message({
-    //           message: res.message,
-    //           type: 'success',
-    //           duration: 3 * 1000
-    //         })
-    //         this.$router.push({
-    //           path: '/index/pastList'
-    //         })
-    //       })
-    //     } else {
-    //       console.log('error')
-    //       return false
-    //     }
-    //   })
-    // }
-    // this.$refs.newsform.validate(valid => {
-    //   if (valid) {
-    //     console.log(this.news)
-    //     this.news.position = 2
-    //     addNews(this.news).then(res => {
-    //       this.$message({
-    //         message: res.message,
-    //         type: 'success',
-    //         duration: 3 * 1000
-    //       })
-    //     })
-    //   } else {
-    //     console.log('error')
-    //     return false
-    //   }
-    // })
+//       categoryCode: 899
+// categoryName: "荣耀奖"
+// createby: "顾家管理员"
+// createtime: 1572590951000
+// description: "第一次获奖"
+// filePath: "0012"
+// id: 7
+// personCode: "0991"
+// personName: "小绿蛇"
+// photoPath: "00221"
+// tittle: "获得首届荣耀奖"
+// updateby: "顾家管理"
+// updatetime: 1572590951000
+this.editPerson.filePath = this.filePath
+this.editPerson.photoPath = this.photoPath
+this.editPerson.headPath = this.headPath
+this.editPerson.categoryCode = this.$route.query.row.categoryCode
+this.editPerson.createby = this.$route.query.row.createby
+this.editPerson.updateby = localStorage.getItem("departmentName")
+editCelebrityPerson(this.editPersoneditPerson).then(res => {
+  debugger
+  console.log(res);
+  
+  this.$router.go(-1)
+})
 
-    // 同步编辑器
-    saveEditor(i) {
-      // console.log(i)
-      this.mobileContent = i;
-    },
-    // 上传图片
-    handleRemove(file, fileList) {
-      console.log(file, fileList);
     },
     handlePreview(file) {
       console.log(file);
     },
-    handleExceed(files, fileList) {
-      this.$message.warning(
-        `当前限制选择 3 个文件，本次选择了 ${
-          files.length
-        } 个文件，共选择了 ${files.length + fileList.length} 个文件`
-      );
+    // 上传图片
+    handleRemove(file, fileList) {
+      this.headPath = ''
+      console.log(file, fileList);
     },
+    handleExceed(files, fileList) {
+        this.$message.warning(`当前限制选择 3 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`);
+      },
     beforeRemove(file, fileList) {
       return this.$confirm(`确定移除 ${file.name}？`);
     },
@@ -311,31 +195,45 @@ export default {
       // console.log(file)
       console.log(response.data[1]);
       this.covers = response.data[1];
+      this.headPath = this.covers
     },
-    setImg(data) {
-      this.news.covers = data[1];
+    handlePreview12(file) {
+      console.log(file);
     },
-    select() {
-      this.dialogFormVisible = true;
-      let data = {
-        content: this.mobileContent
-      };
-      updataMobile(data).then(res => {
-        console.log(res.data);
-        this.picList = res.data;
-      });
+    // 上传图片
+    handleRemove12(file, fileList) {
+      this.photoPath = ''
+      // console.log(file, fileList);
     },
-    setimg(i, index) {
-      this.index = index;
-      this.news.covers = i;
+    handleExceed12(files, fileList) {
+        this.$message.warning(`当前限制选择 3 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`);
+      },
+    beforeRemove12(file, fileList) {
+      return this.$confirm(`确定移除 ${file.name}？`);
     },
-    saveCover() {},
+    handleSuccess12(response, file) {
+      console.log(response.data[1]);
+      this.photoPath = response.data[1];
+    },
+    handlePreview11(file) {
+      console.log(file);
+    },
+    // 上传图片
+    handleRemove11(file, fileList) {
+      this.filePath = ''
+      console.log(file, fileList);
+    },
+    handleExceed11(files, fileList) {
+        this.$message.warning(`当前限制选择 3 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`);
+      },
+    beforeRemove11(file, fileList) {
+      return this.$confirm(`确定移除 ${file.name}？`);
+    },
+    handleSuccess11(response, file) {
+      console.log(response.data[1]);
+      this.filePath = response.data[1];
+    },
   },
- 
-  components: {
-    tiny,
-    cropper
-  }
 };
 </script>
 
@@ -374,8 +272,8 @@ export default {
 .btn {
   float: right;
   margin: 10px 10px;
+  
 }
-
 .mt {
   margin-top: -10px;
 }

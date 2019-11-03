@@ -243,11 +243,11 @@ export default new Router({
           name: 'addCelebrityPersonManagement',
           component: () => import('@/views/celebrityAdmin/celebrityPersonManagement/addCelebrityPersonManagement')
         },
-        // {
-        //   path: '/editCelebrityPersonManagement',
-        //   name: 'editCelebrityPersonManagement',
-        //   component: () => import('@/views/celebrityAdmin/celebrityPersonManagement/editCelebrityPersonManagement')
-        // },
+        {
+          path: '/editCelebrityPersonManagement',
+          name: 'editCelebrityPersonManagement',
+          component: () => import('@/views/celebrityAdmin/celebrityPersonManagement/editCelebrityPersonManagement')
+        },
       ]
     },
     {
