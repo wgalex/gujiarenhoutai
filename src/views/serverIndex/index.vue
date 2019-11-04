@@ -72,6 +72,7 @@ export default {
   },
   created () {
     this.user = JSON.parse(getToken())
+    
     // console.log(this.user)
   },
   methods: {

@@ -122,13 +122,26 @@
 </template>
 
 <script>
+import { selectList} from "@/views/celebrityAdmin/severApi/celebrityUserApi";
 export default {
   props: {
     isCollapse: {
       type: Boolean,
       default: false,
     }
-  }
+  },
+   created () {
+     debugger
+     let queryData = {}
+     queryData.departmentName = localStorage.getItem("departmentName")
+     queryData.departmentId = localStorage.getItem("departmentId")
+    selectList(queryData).then(res => {
+        console.log(res);
+        
+    })
+    
+    // console.log(this.user)
+  },
 }
 </script>
 

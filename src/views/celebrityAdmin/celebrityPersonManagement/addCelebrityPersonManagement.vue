@@ -136,7 +136,7 @@ export default {
     };
   },
   created() {
-  this.addPerson.categoryName = this.$route.query.catorObjs.categoryName
+    this.addPerson.categoryName = this.$route.query.catorObjs.categoryName
   },
   methods: {
     save() {
@@ -159,11 +159,8 @@ this.addPerson.headPath = this.headPath
 this.addPerson.categoryCode = this.$route.query.catorObjs.categoryCode
 this.addPerson.createby = localStorage.getItem("departmentName")
 this.addPerson.updateby = localStorage.getItem("departmentName")
-console.log(this.addPerson);
-return
 addCelebrityPerson(this.addPerson).then(res => {
   this.$router.go(-1)
-  
 })
 
     },
@@ -220,6 +217,7 @@ addCelebrityPerson(this.addPerson).then(res => {
       return this.$confirm(`确定移除 ${file.name}？`);
     },
     handleSuccess11(response, file) {
+      
       console.log(response.data[1]);
       this.filePath = response.data[1];
     },

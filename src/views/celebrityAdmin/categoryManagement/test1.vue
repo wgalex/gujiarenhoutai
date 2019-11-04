@@ -11,7 +11,7 @@
         :render-content="renderContent"
       ></el-tree>
     </div>
-    <el-dialog title="新增类别" :visible.sync="dialog" :append-to-body="true" width="800px">
+    <el-dialog title="新增" :visible.sync="dialog" :append-to-body="true" width="800px">
       <el-form :model="userAdd" label-width="300px">
         <!-- <el-form-item label="层级">
         <el-select v-model="NewLevelCode" placeholder="请选择">
@@ -126,7 +126,7 @@ export default {
     },
     append(data) {
       if(this.maxLevel == 1 && data.categoryCode == ''){
-          this.userAdd.categoryCode = this.randomNum(1,100000)
+          this.userAdd.categoryCode = this.randomNum(1,10000000)
           this.userAdd.departmentName = localStorage.getItem("departmentName");
           this.userAdd.departmentId = localStorage.getItem("departmentId");
           this.userAdd.orginCategoryCode = '';

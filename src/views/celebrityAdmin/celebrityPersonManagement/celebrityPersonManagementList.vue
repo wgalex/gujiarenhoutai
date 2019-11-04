@@ -11,13 +11,13 @@
         <el-button size="mini" type="primary" @click="nextPages">下一页</el-button>
       </el-col>
     </el-row>
-    <el-table :data="list" border style="width: 100%">
-      <el-table-column align="center" type="index" label="序号" width="50" prop="id"></el-table-column>
+    <el-table :data="list" border style="width: 100%;">
+      <el-table-column align="center" type="index" label="序号"  prop="id"></el-table-column>
       <el-table-column align="center" prop="personName" label="获奖人员"></el-table-column>
       <el-table-column align="center" prop="personCode" label="工号"></el-table-column>
       <el-table-column align="center" prop="categoryName" label="奖励名"></el-table-column>
       <!-- <el-table-column align="center" prop="headPath" label="头像"></el-table-column> -->
-      <el-table-column align="center" prop="headPath" label="头像" width="300" style="font-size: 8px">
+      <el-table-column align="center" prop="headPath" label="头像"  style="font-size: 8px">
          <template slot-scope="scope" v-if="scope.row.headPath">
         <div class="pic-box">
             <img :src="scope.row.headPath" alt class="pic" v-image-preview>
@@ -46,18 +46,11 @@
         </template>
       </el-table-column>
       <el-table-column align="center" prop="updateby" label="更新人"></el-table-column>
-
       <el-table-column align="center" label="更新时间">
         <template slot-scope="scope">
           <p>{{scope.row.updatetime | formatDate}}</p>
         </template>
       </el-table-column>
-      <!-- <el-table-column align="center" prop="content" label="内容"></el-table-column> -->
-      <!-- <el-table-column align="center" label="状态" width="100">
-        <template slot-scope="scope">
-          <p>{{ scope.row.status | stage }}</p>
-        </template>
-      </el-table-column> -->
       <el-table-column align="center" label="操作" width="400">
         <template slot-scope="scope">
           <!-- <el-button  type="primary" size="mini" @click="pushDoc">消息推送</el-button> -->
@@ -66,59 +59,10 @@
         </template>
       </el-table-column>
     </el-table>
-    <!-- 编辑窗口 -->
-    <!-- <el-dialog
-      title="期刊信息编辑"
-      :visible.sync="dialog"
-      :append-to-body="true"
-      width="600px"
-    >
-      <el-input placeholder="请输入标题内容" v-model="title" clearable></el-input>
-      <el-input placeholder="请输入摘要" v-model="content" clearable></el-input>
-      <span slot="footer" class="dialog-footer" >
-        <el-row type="flex" justify="end">
-      <el-upload
-        class="upload-demo mt"
-        name="files"
-        ref="upload"
-        action="/kukacms/visitor/picUpload.htm?type=8"
-        :on-success="handleSuccess"
-        :show-file-list="false"
-        :limit="1"
-      >
-        <el-button size="mini" type="primary" style="width: 96px;">上传图片</el-button>
-      </el-upload>
-    </el-row>
-    <el-row type="flex" justify="center" class="title" style="width: 96px;">
-      <span>图片预览</span>
-    </el-row>
-    <el-row type="flex" justify="center" class="content" style="width: 96px;">
-      <template v-if="!bannerUrl">
-        <span>暂无数据</span>
-      </template>
-      <template v-else>
-        <div class="pic-box">
-          <img :src="bannerUrl" alt class="pic">
-        </div>
-      </template>
-    </el-row>
-        <el-button @click="dialog = false">取 消</el-button>
-        <el-button type="primary" @click="saveEdit">保存</el-button>
-      </span>
-    </el-dialog>-->
   </div>
 </template>
 
 <script>
-// import { getDocumentList, searchDocument, getTypeList, workNotice } from '@/api/pastList'
-// import { getMagazinePage, updateMag, deleteMag, upMagazine } from '@/api/magList'
-// import { pushMessage }from '@/api/pastList'
-// import {
-//   getcasebyId,
-//   getcasebytitle,
-//   delcase,
-//   editcase
-// } from "@/views/complaint/severApi/caseServer";
 import { formatDate } from "@/common/js/date";
 import { queryCelebrityPerson ,addCelebrityPerson,queryIdLevel,editCelebrityPerson} from "@/views/celebrityAdmin/severApi/celebrityPerson";
 
@@ -150,42 +94,48 @@ export default {
       covers: null,
       catorObj:'',
       editId: "",
-      
     };
   },
   created() {
-//     categoryCode: "43204"
-// categoryName: "仓储部"
-// children: [{…}]
-// createtime: 1572581944000
-// departmentId: "01"
-// departmentName: "公司主管理员账号"
-// id: 82
-// levelCode: 2
-// levelName: "第2层级"
-// orginCategoryCode: "43090"
-// orginCategoryName: "管家名人堂超级管理员账号"
-    // 
-    // this.$route.query.catorObj
-    
     let queryData = {}
-    // this.catorObj = this.$route.query.catorObj
-    // queryData.departmentName = localStorage.getItem("departmentName");
-    // queryData.departmentId = localStorage.getItem("departmentId");
-    debugger
-    queryData.id = this.$route.query.catorObj.id
+    this.catorObj = this.$route.query.catorObj
+    if(this.catorObj.categoryCode == undefined){
+      if(this.$store.state.user.categoryCode == ''){
+        queryData.categoryCode = '00000'
+      }else{
+        queryData.categoryCode = this.$store.state.user.categoryCode
+      }
+    }else{
+      queryData.categoryCode = this.catorObj.categoryCode
+      this.$store.commit('setCatagroycode',this.catorObj.categoryCode)
+    }
      queryCelebrityPerson(queryData).then(res => {
        this.list = res.data.itemList
      })
   },
   methods: {
     upPages() {
+      debugger
+      let queryData = {}
+      this.catorObj = this.$route.query.catorObj
+      if(this.catorObj.categoryCode == undefined){
+        if(this.$store.state.user.categoryCode == ''){
+          queryData.categoryCode = '00000'
+        }else{
+          queryData.categoryCode = this.$store.state.user.categoryCode
+        }
+      }else{
+        queryData.categoryCode = this.catorObj.categoryCode
+        this.$store.commit('setCatagroycode',this.catorObj.categoryCode)
+      }
       if (this.curPage == 1) {
         return;
       }
       if (this.prePage == true) {
         this.curPage--;
-        getcasebytitle(this.curPage, this.sizePage, this.status).then(res => {
+        queryData.curPage = this.curPage
+        queryData.sizePage = 15
+        queryCelebrityPerson(queryData).then(res => {
           this.list = res.data.itemList;
           this.nextPage = res.data.nextPage;
           this.prePage = res.data.prePage;
@@ -193,9 +143,24 @@ export default {
       }
     },
     nextPages() {
+      debugger
+      let queryData = {}
+      this.catorObj = this.$route.query.catorObj
+      if(this.catorObj.categoryCode == undefined){
+        if(this.$store.state.user.categoryCode == ''){
+          queryData.categoryCode = '00000'
+        }else{
+          queryData.categoryCode = this.$store.state.user.categoryCode
+        }
+      }else{
+        queryData.categoryCode = this.catorObj.categoryCode
+        this.$store.commit('setCatagroycode',this.catorObj.categoryCode)
+      }
       if (this.nextPage == true) {
         this.curPage++;
-        getcasebytitle(this.curPage, this.sizePage, this.status).then(res => {
+        queryData.curPage = this.curPage
+        queryData.sizePage = 15
+        queryCelebrityPerson(queryData).then(res => {
           this.list = res.data.itemList;
           this.nextPage = res.data.nextPage;
           this.prePage = res.data.prePage;
@@ -237,7 +202,7 @@ export default {
       this.$refs.upload.clearFiles();
     },
     editor(row) {
-      debugger
+      
       this.$router.push({
         name: "editCelebrityPersonManagement",
         query: {
@@ -366,5 +331,8 @@ export default {
     height: 100%;
     
   }
+}
+.el-table__body, .el-table__footer, .el-table__header{
+    table-layout: automatic; 
 }
 </style>

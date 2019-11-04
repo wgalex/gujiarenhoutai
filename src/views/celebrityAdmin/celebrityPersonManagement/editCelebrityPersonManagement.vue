@@ -108,6 +108,7 @@ export default {
                 createby:'',
                 categoryCode:'',
                 updateby:'',
+                id:''
             },
       show: false,
       fileList:[],
@@ -136,7 +137,7 @@ export default {
     };
   },
   created() {
-    debugger
+    
     let lastRow = this.$route.query.row
     this.editPerson.categoryName = lastRow.categoryName
     this.editPerson.personName = lastRow.personName
@@ -167,10 +168,10 @@ this.editPerson.filePath = this.filePath
 this.editPerson.photoPath = this.photoPath
 this.editPerson.headPath = this.headPath
 this.editPerson.categoryCode = this.$route.query.row.categoryCode
+this.editPerson.id = this.$route.query.row.id
 this.editPerson.createby = this.$route.query.row.createby
 this.editPerson.updateby = localStorage.getItem("departmentName")
-editCelebrityPerson(this.editPersoneditPerson).then(res => {
-  debugger
+editCelebrityPerson(this.editPerson).then(res => {
   console.log(res);
   
   this.$router.go(-1)
@@ -212,6 +213,7 @@ editCelebrityPerson(this.editPersoneditPerson).then(res => {
       return this.$confirm(`确定移除 ${file.name}？`);
     },
     handleSuccess12(response, file) {
+      
       console.log(response.data[1]);
       this.photoPath = response.data[1];
     },
@@ -230,6 +232,7 @@ editCelebrityPerson(this.editPersoneditPerson).then(res => {
       return this.$confirm(`确定移除 ${file.name}？`);
     },
     handleSuccess11(response, file) {
+      
       console.log(response.data[1]);
       this.filePath = response.data[1];
     },

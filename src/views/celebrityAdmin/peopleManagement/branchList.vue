@@ -8,11 +8,20 @@
       <el-table-column align="center" prop="id" label="序号" width="50"></el-table-column>
       <el-table-column align="center" prop="userName" label="姓名"></el-table-column>
       <el-table-column align="center" prop="account" label="账户"></el-table-column>
-      <el-table-column align="center" label="角色">
+      <el-table-column align="center" label="操作" width="150">
+        <template slot-scope="scope">
+          <el-button type="primary" size="mini" @click="del(scope.row.id)">删除</el-button>
+        </template>
+      </el-table-column>
+      <el-radio-group v-model="userEdit.state" >
+          <el-radio label="0">禁用</el-radio>
+          <el-radio label="1">启用</el-radio>
+      </el-radio-group>
+      <!-- <el-table-column align="center" label="角色">
         <template slot-scope="scope">
           <p>{{scope.row.roleId | stage}}</p>
         </template>
-      </el-table-column>
+      </el-table-column> -->
       <el-table-column align="center" label="操作" width="150">
         <template slot-scope="scope">
           <el-button type="primary" size="mini" @click="del(scope.row.id)">删除</el-button>
@@ -33,7 +42,10 @@
           <el-input v-model="user.password" placeholder="登录密码"></el-input>
         </el-form-item>
         <el-form-item label="部门">
-          <el-input v-model="user.account" placeholder="请输入部门"></el-input>
+          <el-input v-model="user.departmentName" placeholder="请输入部门"></el-input>
+        </el-form-item>
+        <el-form-item label="部门id">
+          <el-input v-model="user.departmentId" placeholder="请输入部门ID"></el-input>
         </el-form-item>
         <!-- <el-form-item label="角色" >
           <el-radio-group v-model="user.roleId" >
@@ -65,7 +77,8 @@ export default {
         roleId: "8",
         departmentId: "",
         departmentName: "",
-        type: 2
+        type: 2,
+        state:1,
       }
     };
   },
@@ -101,9 +114,8 @@ export default {
         });
     },
     saveUser() {
-      debugger;
-      this.user.departmentId = localStorage.getItem("usersId");
-      this.user.departmentName = localStorage.getItem("departmentName");
+      // this.user.departmentId = localStorage.getItem("usersId");
+      // this.user.departmentName = localStorage.getItem("departmentName");
       addUser(this.user).then(res => {
         this.dialog = false;
         console.log(res);
@@ -116,20 +128,42 @@ export default {
   filters: {
     // 判断角色
     stage(i) {
+      if (i == 0) {
+        return "禁用";
+      }
       if (i == 1) {
-        return "管理员";
-      }
-      if (i == 2) {
-        return "编辑";
-      }
-      if (i == 3) {
-        return "审批";
-      }
-      if (i == 4) {
-        return "服务管理";
+        return "启用";
       }
     }
   }
+//   /**
+//    * 用户账号
+//    */
+//   private String account;
+//   /**
+//    * 用户名
+//    */
+//   private String userName;
+//   /**
+//    * 登录密码
+//    */
+//   private String password;
+//   /**
+//    * 所属角色id
+//    */
+//   private Integer roleId;
+//   /**
+//    * 用户类型公司级别0 单位级别1
+//    */
+//   private Integer type;
+//   /**
+//    * 状态，启用禁用
+//    */
+//   private Integer state;
+//   //部门id
+//   private String departmentId;
+//   //部门名称
+//   private String departmentName;
 };
 </script>
 <style lang="scss" scoped>

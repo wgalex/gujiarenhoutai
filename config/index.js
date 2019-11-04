@@ -16,15 +16,15 @@ module.exports = {
         // target: 'http://family.kukahome.com:5080/kukacms/',
         // target: 'http://172.16.28.150:9999/kukacms',
         // http://172.16.26.125:9090
-        target: 'http://116.62.60.13:8090/kukacms/',
-        // target: 'http://172.17.36.15:8080/kukacms/',
+        // target: 'http://116.62.60.13:8090/kukacms/',http://172.16.28.132:8080/kukacms/
+        target: 'http://172.16.28.132:8080/kukacms/',
         changeOrigin: true,
         pathRewrite: {
           '^/kukacms': ''
         }
       },
 			'/nginx_pic_sever': {
-        target: 'http://116.62.60.13:9000',
+        target: 'http://172.16.28.132:9000',
         // target: 'http://172.16.26.125:9000',
         // target: 'http://127.0.0.1:9999',
         // http://172.16.26.125:9090
