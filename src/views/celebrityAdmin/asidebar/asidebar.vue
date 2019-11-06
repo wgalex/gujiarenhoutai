@@ -42,21 +42,18 @@
             <i class="el-icon-menu"></i>
             <span slot="title">类别管理</span>
           </template>
-            <!-- <router-link :to="{name: 'categoryManagementList'}">
-                <el-menu-item index="3-1">类别列表</el-menu-item>
-            </router-link> -->
-             <!-- <router-link :to="{name: 'test'}">
-                <el-menu-item index="3-2">类别列表</el-menu-item>
-            </router-link> -->
              <router-link :to="{name: 'test1'}">
-                <el-menu-item index="3-1">类别列表</el-menu-item>
+                <el-menu-item index="2-1">类别列表</el-menu-item>
             </router-link>
-            <!-- <router-link :to="{name: 'branchList'}" >
-                <el-menu-item index="3-3">技术部账号</el-menu-item>
+        </el-submenu>
+        <el-submenu index="3">
+          <template slot="title">
+            <i class="el-icon-menu"></i>
+            <span slot="title">首页图片管理</span>
+          </template>
+             <router-link :to="{name: 'bannerImage'}">
+                <el-menu-item index="3-1">首页图片</el-menu-item>
             </router-link>
-              <router-link :to="{name: 'branchListadd'}">
-                <el-menu-item index="3-4">增加部门</el-menu-item>
-            </router-link> -->
         </el-submenu>
         <!-- <el-submenu index="3">
           <template slot="title">
@@ -131,16 +128,18 @@ export default {
     }
   },
    created () {
-     debugger
-     let queryData = {}
-     queryData.departmentName = localStorage.getItem("departmentName")
-     queryData.departmentId = localStorage.getItem("departmentId")
-    selectList(queryData).then(res => {
-        console.log(res);
-        
-    })
-    
-    // console.log(this.user)
+     
+    //  let queryData = {}
+    //  queryData.departmentName = localStorage.getItem("departmentName")
+    //  queryData.departmentId = localStorage.getItem("departmentId")
+    // selectList(queryData).then(res => {
+    //   let that = this
+    //   if(res.data.length != 1){
+    //     that.$store.commit('changeShowAccount',true)
+    //   }else{
+    //     that.$store.commit('changeShowAccount',false)
+    //   }
+    // })
   },
 }
 </script>

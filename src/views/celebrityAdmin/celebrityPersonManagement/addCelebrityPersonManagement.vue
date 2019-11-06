@@ -8,8 +8,14 @@
       <el-form-item label="人员名称" style="margin-top:10px">
         <el-input v-model.trim="addPerson.personName"></el-input>
       </el-form-item>
-     <el-form-item label="人员工号" style="margin-top:10px">
+      <el-form-item label="人员工号" style="margin-top:10px">
         <el-input v-model.trim="addPerson.personCode"></el-input>
+      </el-form-item>
+      <el-form-item label="年份" style="margin-top:10px">
+        <div class="block">
+          <!-- <span class="demonstration">年</span> -->
+          <el-date-picker v-model="addPerson.years" type="year" placeholder="选择年"></el-date-picker>
+        </div>
       </el-form-item>
       <el-form-item label="标题" style="margin-top:10px">
         <el-input v-model.trim="addPerson.tittle"></el-input>
@@ -18,71 +24,74 @@
         <el-input v-model.trim="addPerson.description"></el-input>
       </el-form-item>
     </el-form>
-    <div  style="float:left;width: 200px;height:200px;margin-left:10px">
-        <img :src=" this.covers" alt style="width: 200px;height:200px">
+    <div style="float:left;width: 200px;height:200px;margin-left:10px">
+      <img :src=" this.covers" alt style="width: 200px;height:200px" />
     </div>
     <div style="float:right;width:155px">
-    <el-upload 
-          class="upload-demo mt"
-          name="files"
-          action="/kukacms/visitor/picUpload.htm?type=10"
-          :on-preview="handlePreview"
-          :on-remove="handleRemove"
-          :before-remove="beforeRemove"
-          :on-success="handleSuccess"
-          :show-file-list="false"
-          multiple
-          :limit="1"
-        >
-          <el-button size="mini" type="primary" style="width: 96px">上传头像</el-button>
-        </el-upload>
+      <el-upload
+        class="upload-demo mt"
+        name="files"
+        action="/kukacms/visitor/picUpload.htm?type=10"
+        :on-preview="handlePreview"
+        :on-remove="handleRemove"
+        :before-remove="beforeRemove"
+        :on-success="handleSuccess"
+        :show-file-list="false"
+        multiple
+        :limit="1"
+      >
+        <el-button size="mini" type="primary" style="width: 96px">上传头像</el-button>
+      </el-upload>
     </div>
     <div style="float:right;margin-left:35px;margin-top:20px ;width:155px">
-    <el-upload 
-          class="upload-demo mt"
-          name="files"
-          action="/kukacms/visitor/picUpload.htm?type=11"
-          :on-preview="handlePreview11"
-          :on-remove="handleRemove11"
-          :before-remove="beforeRemove11"
-          :on-success="handleSuccess11"
-          :on-exceed="handleExceed11"
-          :show-file-list="true"
-          multiple
-          :limit="1"
-        >
-          <el-button size="mini" type="primary" style="width: 96px">上传视频</el-button>
-        </el-upload>
+      <el-upload
+        class="upload-demo mt"
+        name="files"
+        action="/kukacms/visitor/picUpload.htm?type=11"
+        :on-preview="handlePreview11"
+        :on-remove="handleRemove11"
+        :before-remove="beforeRemove11"
+        :on-success="handleSuccess11"
+        :on-exceed="handleExceed11"
+        :show-file-list="true"
+        multiple
+        :limit="1"
+      >
+        <el-button size="mini" type="primary" style="width: 96px">上传视频</el-button>
+      </el-upload>
     </div>
     <div style="float:right;margin-left:35px;margin-top:20px;width:155px">
-    <el-upload 
-          class="upload-demo mt"
-          name="files"
-          action="/kukacms/visitor/picUpload.htm?type=12"
-          :on-preview="handlePreview12"
-          :on-remove="handleRemove12"
-          :before-remove="beforeRemove12"
-          :on-success="handleSuccess12"
-          :show-file-list="true"
-          multiple
-          :limit="1"
-          :on-exceed="handleExceed12"
-        >
-          <el-button size="mini" type="primary" style="width: 96px">上传图片</el-button>
-        </el-upload>
+      <el-upload
+        class="upload-demo mt"
+        name="files"
+        action="/kukacms/visitor/picUpload.htm?type=12"
+        :on-preview="handlePreview12"
+        :on-remove="handleRemove12"
+        :before-remove="beforeRemove12"
+        :on-success="handleSuccess12"
+        :show-file-list="true"
+        multiple
+        :limit="1"
+        :on-exceed="handleExceed12"
+      >
+        <el-button size="mini" type="primary" style="width: 96px">上传图片</el-button>
+      </el-upload>
     </div>
     <div style="float:right;margin-left:35px;margin-top:10px;width:155px">
-      <el-button type="primary" @click="save"  size="mini">保存</el-button>
+      <el-button type="primary" @click="save" size="mini">保存</el-button>
     </div>
-   
-    
   </div>
 </template>
 
 <script>
 import cropper from "./ImageCroppers/index";
 // import { getTypeAuditList, addNews, updataMobile, updataNews } from './news'
-import { queryCelebrityPerson ,addCelebrityPerson,queryIdLevel,editCelebrityPerson} from "@/views/celebrityAdmin/severApi/celebrityPerson";
+import {
+  queryCelebrityPerson,
+  addCelebrityPerson,
+  queryIdLevel,
+  editCelebrityPerson
+} from "@/views/celebrityAdmin/severApi/celebrityPerson";
 import { formatDate } from "@/common/js/date";
 import tiny from "@/components/Tinymce/index";
 // import { getMagazinePage } from "@/api/magList";
@@ -91,26 +100,27 @@ export default {
     news: {
       type: Object,
       default: () => {
-        return {
-        };
+        return {};
       }
     }
   },
   data() {
     return {
-      addPerson:{
-                personName:'',
-                personCode:'',
-                tittle:'',
-                filePath:'',
-                photoPath:'',
-                headPath:'',
-                createby:'',
-                categoryCode:'',
-                updateby:'',
-            },
+      addPerson: {
+        personName: "",
+        personCode: "",
+        tittle: "",
+        filePath: "",
+        photoPath: "",
+        headPath: "",
+        createby: "",
+        categoryCode: "",
+        updateby: "",
+        years:""
+
+      },
       show: false,
-      fileList:[],
+      fileList: [],
       rules: {
         name: [{ required: true, message: "请输入标题", trigger: "blur" }],
         magazine: [
@@ -123,58 +133,62 @@ export default {
         // type: [{required: true, message: '请选择栏目',trigger: 'change'}],
         contentType: [
           { required: true, message: "请选择资讯类型", trigger: "blur" }
-        ],
+        ]
       },
       searchList: [],
       type: "",
       fileList: [],
       covers: "",
-      imageUrl: '',
-      filePath:'',
-      photoPath:'',
-      headPath:'',
+      imageUrl: "",
+      filePath: "",
+      photoPath: "",
+      headPath: ""
     };
   },
   created() {
-    this.addPerson.categoryName = this.$route.query.catorObjs.categoryName
+    debugger
+    this.addPerson.categoryName = this.$route.query.catorObjs.categoryName;
   },
   methods: {
     save() {
-//       categoryCode: 899
-// categoryName: "荣耀奖"
-// createby: "顾家管理员"
-// createtime: 1572590951000
-// description: "第一次获奖"
-// filePath: "0012"
-// id: 7
-// personCode: "0991"
-// personName: "小绿蛇"
-// photoPath: "00221"
-// tittle: "获得首届荣耀奖"
-// updateby: "顾家管理"
-// updatetime: 1572590951000
-this.addPerson.filePath = this.filePath
-this.addPerson.photoPath = this.photoPath
-this.addPerson.headPath = this.headPath
-this.addPerson.categoryCode = this.$route.query.catorObjs.categoryCode
-this.addPerson.createby = localStorage.getItem("departmentName")
-this.addPerson.updateby = localStorage.getItem("departmentName")
-addCelebrityPerson(this.addPerson).then(res => {
-  this.$router.go(-1)
-})
-
+      //       categoryCode: 899
+      // categoryName: "荣耀奖"
+      // createby: "顾家管理员"
+      // createtime: 1572590951000
+      // description: "第一次获奖"
+      // filePath: "0012"
+      // id: 7
+      // personCode: "0991"
+      // personName: "小绿蛇"
+      // photoPath: "00221"
+      // tittle: "获得首届荣耀奖"
+      // updateby: "顾家管理"
+      // updatetime: 1572590951000
+      this.addPerson.filePath = this.filePath;
+      this.addPerson.photoPath = this.photoPath;
+      this.addPerson.headPath = this.headPath;
+      this.addPerson.categoryCode = this.$route.query.catorObjs.categoryCode;
+      this.addPerson.createby = localStorage.getItem("departmentName");
+      this.addPerson.updateby = localStorage.getItem("departmentName");
+      addCelebrityPerson(this.addPerson).then(res => {
+        this.$router.go(-1);
+      });
     },
     handlePreview(file) {
       console.log(file);
     },
     // 上传图片
     handleRemove(file, fileList) {
-      this.headPath = ''
+      this.headPath = "";
       console.log(file, fileList);
     },
     handleExceed(files, fileList) {
-        this.$message.warning(`当前限制选择 3 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`);
-      },
+      this.$message.warning(
+        `当前限制选择 3 个文件，本次选择了 ${
+          files.length
+        } 个文件，共选择了 ${files.length + fileList.length} 个文件`
+      );
+    },
     beforeRemove(file, fileList) {
       return this.$confirm(`确定移除 ${file.name}？`);
     },
@@ -182,19 +196,23 @@ addCelebrityPerson(this.addPerson).then(res => {
       // console.log(file)
       console.log(response.data[1]);
       this.covers = response.data[1];
-      this.headPath = this.covers
+      this.headPath = this.covers;
     },
     handlePreview12(file) {
       console.log(file);
     },
     // 上传图片
     handleRemove12(file, fileList) {
-      this.photoPath = ''
+      this.photoPath = "";
       // console.log(file, fileList);
     },
     handleExceed12(files, fileList) {
-        this.$message.warning(`当前限制选择 3 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`);
-      },
+      this.$message.warning(
+        `当前限制选择 1 个文件，本次选择了 ${
+          files.length
+        } 个文件，共选择了 ${files.length + fileList.length} 个文件`
+      );
+    },
     beforeRemove12(file, fileList) {
       return this.$confirm(`确定移除 ${file.name}？`);
     },
@@ -207,21 +225,24 @@ addCelebrityPerson(this.addPerson).then(res => {
     },
     // 上传图片
     handleRemove11(file, fileList) {
-      this.filePath = ''
+      this.filePath = "";
       console.log(file, fileList);
     },
     handleExceed11(files, fileList) {
-        this.$message.warning(`当前限制选择 3 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`);
-      },
+      this.$message.warning(
+        `当前限制选择 3 个文件，本次选择了 ${
+          files.length
+        } 个文件，共选择了 ${files.length + fileList.length} 个文件`
+      );
+    },
     beforeRemove11(file, fileList) {
       return this.$confirm(`确定移除 ${file.name}？`);
     },
     handleSuccess11(response, file) {
-      
       console.log(response.data[1]);
       this.filePath = response.data[1];
-    },
-  },
+    }
+  }
 };
 </script>
 
@@ -260,7 +281,6 @@ addCelebrityPerson(this.addPerson).then(res => {
 .btn {
   float: right;
   margin: 10px 10px;
-  
 }
 .mt {
   margin-top: -10px;

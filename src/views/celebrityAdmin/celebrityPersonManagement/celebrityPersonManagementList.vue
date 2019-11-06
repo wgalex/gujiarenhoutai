@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1 style="margin: 20px 0; font-size: 24px">案例列表</h1>
+    <h1 style="margin: 20px 0; font-size: 24px">名人列表</h1>
     <el-row style="margin-bottom: 10px; float: right;">
       <el-col>
         <!-- <el-button size="mini" type="primary" @click="unStatus">切换状态显示列表</el-button> -->
@@ -115,7 +115,6 @@ export default {
   },
   methods: {
     upPages() {
-      debugger
       let queryData = {}
       this.catorObj = this.$route.query.catorObj
       if(this.catorObj.categoryCode == undefined){
@@ -143,7 +142,7 @@ export default {
       }
     },
     nextPages() {
-      debugger
+      
       let queryData = {}
       this.catorObj = this.$route.query.catorObj
       if(this.catorObj.categoryCode == undefined){

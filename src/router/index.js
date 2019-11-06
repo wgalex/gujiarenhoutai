@@ -248,6 +248,11 @@ export default new Router({
           name: 'editCelebrityPersonManagement',
           component: () => import('@/views/celebrityAdmin/celebrityPersonManagement/editCelebrityPersonManagement')
         },
+        {
+          path: '/bannerImage',
+          name: 'bannerImage',
+          component: () => import('@/views/celebrityAdmin/bannerImage/bannerImage')
+        },
       ]
     },
     {

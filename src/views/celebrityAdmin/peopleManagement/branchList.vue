@@ -2,34 +2,35 @@
   <div>
     <h1 style="margin: 20px 0; font-size: 24px">用户列表</h1>
     <el-row>
-      <el-button type="primary" size="mini" class="btn" @click="dialog = true">新增账户</el-button>
+      <el-button type="primary" size="mini" class="btn" @click="dialog = true" v-if="showAccount">新增账户</el-button>
     </el-row>
     <el-table :data="list" border style="width: 100%">
       <el-table-column align="center" prop="id" label="序号" width="50"></el-table-column>
       <el-table-column align="center" prop="userName" label="姓名"></el-table-column>
       <el-table-column align="center" prop="account" label="账户"></el-table-column>
-      <el-table-column align="center" label="操作" width="150">
+      <el-table-column align="center" prop="departmentName" label="部门"></el-table-column>
+      <el-table-column align="center" prop="departmentId" label="部门Id"></el-table-column>
+      <el-table-column align="center" label="状态">
         <template slot-scope="scope">
-          <el-button type="primary" size="mini" @click="del(scope.row.id)">删除</el-button>
+          <p>{{scope.row.state | stage }}</p>
         </template>
       </el-table-column>
-      <el-radio-group v-model="userEdit.state" >
-          <el-radio label="0">禁用</el-radio>
-          <el-radio label="1">启用</el-radio>
-      </el-radio-group>
-      <!-- <el-table-column align="center" label="角色">
+      <el-table-column align="center" label="操作" width="150" v-if="showAccount">
         <template slot-scope="scope">
-          <p>{{scope.row.roleId | stage}}</p>
-        </template>
-      </el-table-column> -->
-      <el-table-column align="center" label="操作" width="150">
-        <template slot-scope="scope">
-          <el-button type="primary" size="mini" @click="del(scope.row.id)">删除</el-button>
+          <el-button type="primary" size="mini" @click="del(scope.row.id) " >删除</el-button>
         </template>
       </el-table-column>
     </el-table>
-
-    <!-- 编辑窗口 -->
+    <!-- account: "renshibu_admin"
+departmentId: "009"
+departmentName: "人事部"
+id: 12
+password: "e10adc3949ba59abbe56e057f20f883e"
+roleId: 8
+state: 1
+type: 2
+userName: "华文辉" -->
+    <!-- 新增窗口 -->
     <el-dialog title="新增用户" :visible.sync="dialog" :append-to-body="true" width="600px">
       <el-form :model="user" label-width="70px">
         <el-form-item label="姓名">
@@ -64,7 +65,7 @@
 </template>
 
 <script>
-import { getUserList, addUser, deleteUser } from "@/api/admin";
+import { selectList ,addUser , deleteUser} from "@/views/celebrityAdmin/severApi/celebrityUserApi";
 export default {
   data() {
     return {
@@ -78,8 +79,9 @@ export default {
         departmentId: "",
         departmentName: "",
         type: 2,
-        state:1,
-      }
+        state: 1
+      },
+      showAccount:false
     };
   },
   created() {
@@ -87,7 +89,15 @@ export default {
   },
   methods: {
     upData() {
-      getUserList().then(res => {
+      let queryData = {}
+      if( localStorage.getItem("departmentType") == 1){
+        queryData.type = 2
+        this.showAccount = true
+      }else{
+        queryData.departmentName = localStorage.getItem("departmentName")
+        queryData.departmentId = localStorage.getItem("departmentId")
+      }
+      selectList(queryData).then(res => {
         this.list = res.data;
       });
     },
@@ -114,8 +124,6 @@ export default {
         });
     },
     saveUser() {
-      // this.user.departmentId = localStorage.getItem("usersId");
-      // this.user.departmentName = localStorage.getItem("departmentName");
       addUser(this.user).then(res => {
         this.dialog = false;
         console.log(res);
@@ -136,34 +144,34 @@ export default {
       }
     }
   }
-//   /**
-//    * 用户账号
-//    */
-//   private String account;
-//   /**
-//    * 用户名
-//    */
-//   private String userName;
-//   /**
-//    * 登录密码
-//    */
-//   private String password;
-//   /**
-//    * 所属角色id
-//    */
-//   private Integer roleId;
-//   /**
-//    * 用户类型公司级别0 单位级别1
-//    */
-//   private Integer type;
-//   /**
-//    * 状态，启用禁用
-//    */
-//   private Integer state;
-//   //部门id
-//   private String departmentId;
-//   //部门名称
-//   private String departmentName;
+  //   /**
+  //    * 用户账号
+  //    */
+  //   private String account;
+  //   /**
+  //    * 用户名
+  //    */
+  //   private String userName;
+  //   /**
+  //    * 登录密码
+  //    */
+  //   private String password;
+  //   /**
+  //    * 所属角色id
+  //    */
+  //   private Integer roleId;
+  //   /**
+  //    * 用户类型公司级别0 单位级别1
+  //    */
+  //   private Integer type;
+  //   /**
+  //    * 状态，启用禁用
+  //    */
+  //   private Integer state;
+  //   //部门id
+  //   private String departmentId;
+  //   //部门名称
+  //   private String departmentName;
 };
 </script>
 <style lang="scss" scoped>

@@ -9,4 +9,19 @@ export function selectList (query) {
     data: qs.stringify(query)
   })
 }
+export function addUser (data) {
+  return fetch({
+    url: `/kukacms/addUser.htm`,
+    method: 'post',
+    data: qs.stringify(data)
+  })
+}
+
+export function deleteUser (id) {
+  return fetch({
+    url: `/kukacms/deleteUser.htm?id=${id}`,
+    method: 'get',
+  })
+}
+
 

@@ -55,6 +55,7 @@ export default {
         localStorage.setItem('pwd',res.data.password)
         localStorage.setItem('departmentId',res.data.departmentId)
         localStorage.setItem('departmentName',res.data.departmentName)
+        localStorage.setItem('departmentType',res.data.type)
         // let data = {'id':res.id,'password':res.password}
         //  this.$store.conmmit('getId',data)
         if (res.data.roleId == 1) {

@@ -70,7 +70,6 @@ export default {
     }
   },
   computed: {
-    
     name () {
       return this.user.userName
     }
@@ -84,6 +83,9 @@ export default {
     
   // }
     this.user = JSON.parse(getToken())
+    this.$router.push({
+        path:'/test1'
+      })
   },
   methods: {
    save(){

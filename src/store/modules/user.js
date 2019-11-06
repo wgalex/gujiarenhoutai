@@ -3,7 +3,8 @@ const user = {
   state: {
     id:'',
     password:'',
-    categoryCode:''
+    categoryCode:'',
+    showAccount:''
   },
   mutations:{
     getId(state,data){
@@ -13,6 +14,9 @@ const user = {
     setCatagroycode(state,data) {   //自定义改变state初始值的方法，这里面的参数除了state之外还可以再传额外的参数(变量或对象);
       state.categoryCode = data;
   },
+      changeShowAccount(state,data){
+      state.showAccount = data;
+    }
   }
 }
 
