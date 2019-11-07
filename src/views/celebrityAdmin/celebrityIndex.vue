@@ -84,7 +84,7 @@ export default {
   // }
     this.user = JSON.parse(getToken())
     this.$router.push({
-        path:'/test1'
+        path:'/bannerImage'
       })
   },
   methods: {

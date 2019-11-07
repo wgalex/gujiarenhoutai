@@ -13,6 +13,7 @@
     </el-row>
     <el-table :data="list" border style="width: 100%;">
       <el-table-column align="center" type="index" label="序号"  prop="id"></el-table-column>
+      <el-table-column align="center"  label='获奖年份'  prop="years"></el-table-column>
       <el-table-column align="center" prop="personName" label="获奖人员"></el-table-column>
       <el-table-column align="center" prop="personCode" label="工号"></el-table-column>
       <el-table-column align="center" prop="categoryName" label="奖励名"></el-table-column>
@@ -61,7 +62,6 @@
     </el-table>
   </div>
 </template>
-
 <script>
 import { formatDate } from "@/common/js/date";
 import { queryCelebrityPerson ,addCelebrityPerson,queryIdLevel,editCelebrityPerson} from "@/views/celebrityAdmin/severApi/celebrityPerson";
@@ -166,34 +166,6 @@ export default {
         });
       }
     },
-    // del(id) {
-    //   this.$confirm("即将删除期刊, 是否继续?", "提示", {
-    //     confirmButtonText: "确定",
-    //     cancelButtonText: "取消",
-    //     type: "warning"
-    //   })
-    //     .then(() => {
-    //       console.log(id);
-
-    //       delcase(id).then(res => {
-    //         this.$message({
-    //           type: "success",
-    //           message: "删除成功!"
-    //         });
-    //         getcasebytitle(this.curPage, this.sizePage, this.status).then(
-    //           res => {
-    //             this.list = res.data.itemList;
-    //           }
-    //         );
-    //       });
-    //     })
-    //     .catch(() => {
-    //       this.$message({
-    //         type: "info",
-    //         message: "已取消删除"
-    //       });
-    //     });
-    // },
     handleSuccess(res) {
       // console.log(res);
       this.covers = res.data[1];

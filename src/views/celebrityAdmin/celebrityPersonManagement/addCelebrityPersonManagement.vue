@@ -1,7 +1,7 @@
 <template>
   <div class="form-box" style="width:1200px">
     <h1 style="margin: 20px 0; font-size: 24px">获奖人员添加</h1>
-    <el-form label-width="110px" style="width: 800px;float:left" ref="newsform">
+    <el-form label-width="110px" style="width: 800px;float:left" ref="addPersons" :rules="rules" :model="addPerson">
       <el-form-item label="获奖名称" style="margin-top:10px">
         <el-input v-model.trim="addPerson.categoryName" disabled></el-input>
       </el-form-item>
@@ -78,7 +78,7 @@
       </el-upload>
     </div>
     <div style="float:right;margin-left:35px;margin-top:10px;width:155px">
-      <el-button type="primary" @click="save" size="mini">保存</el-button>
+      <el-button type="primary" @click="save()" size="mini">保存</el-button>
     </div>
   </div>
 </template>
@@ -116,24 +116,19 @@ export default {
         createby: "",
         categoryCode: "",
         updateby: "",
-        years:""
+        years:"",
+        description:''
 
       },
       show: false,
       fileList: [],
       rules: {
-        name: [{ required: true, message: "请输入标题", trigger: "blur" }],
-        magazine: [
-          { required: true, message: "请选择期刊", trigger: "change" }
-        ],
-        typeId: [{ required: true, message: "请选择栏目", trigger: "change" }],
-        keywords: [
-          { required: true, message: "请输入部门/作者", trigger: "blur" }
-        ],
-        // type: [{required: true, message: '请选择栏目',trigger: 'change'}],
-        contentType: [
-          { required: true, message: "请选择资讯类型", trigger: "blur" }
-        ]
+            tittle: [{ required: true, message: "请输入标题", trigger: "blur" }],
+            personName: [{ required: true, message: "请输入人员名称", trigger: "blur" }],
+            personCode: [{ required: true, message: "请输入人员工号", trigger: "blur" }],
+            // headPath: [{ required: true, message: "请上传头像", trigger: "blur" }],
+            years: [{ required: true, message: "请选择年份", trigger: "blur" }],
+            description: [{ required: true, message: "请输入描述", trigger: "blur" }],
       },
       searchList: [],
       type: "",
@@ -146,34 +141,41 @@ export default {
     };
   },
   created() {
-    debugger
     this.addPerson.categoryName = this.$route.query.catorObjs.categoryName;
   },
   methods: {
     save() {
-      //       categoryCode: 899
-      // categoryName: "荣耀奖"
-      // createby: "顾家管理员"
-      // createtime: 1572590951000
-      // description: "第一次获奖"
-      // filePath: "0012"
-      // id: 7
-      // personCode: "0991"
-      // personName: "小绿蛇"
-      // photoPath: "00221"
-      // tittle: "获得首届荣耀奖"
-      // updateby: "顾家管理"
-      // updatetime: 1572590951000
-      this.addPerson.filePath = this.filePath;
-      this.addPerson.photoPath = this.photoPath;
-      this.addPerson.headPath = this.headPath;
-      this.addPerson.categoryCode = this.$route.query.catorObjs.categoryCode;
-      this.addPerson.createby = localStorage.getItem("departmentName");
-      this.addPerson.updateby = localStorage.getItem("departmentName");
-      addCelebrityPerson(this.addPerson).then(res => {
-        this.$router.go(-1);
-      });
+      debugger
+      this.$refs.addPersons.validate((valid) => {
+          if (valid) {
+            // this.addPerson.years = this.addPerson.years.getFullYear();
+            // this.addPerson.years = this.addPerson.years
+            this.addPerson.filePath = this.filePath;
+            this.addPerson.photoPath = this.photoPath;
+            this.addPerson.headPath = this.headPath;
+            this.addPerson.categoryCode = this.$route.query.catorObjs.categoryCode;
+            this.addPerson.createby = localStorage.getItem("departmentName");
+            this.addPerson.updateby = localStorage.getItem("departmentName");
+            return
+            addCelebrityPerson(this.addPerson).then(res => {
+              this.$router.go(-1);
+            });
+          } else {
+            return false;
+          }
+        });
+      
     },
+     submitForm(formName) {
+        this.$refs[formName].validate((valid) => {
+          if (valid) {
+            alert('submit!');
+          } else {
+            console.log('error submit!!');
+            return false;
+          }
+        });
+      },
     handlePreview(file) {
       console.log(file);
     },
