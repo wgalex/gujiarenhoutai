@@ -1,20 +1,26 @@
 <template>
   <div class="form-box" style="width:1200px">
     <h1 style="margin: 20px 0; font-size: 24px">获奖人员添加</h1>
-    <el-form label-width="110px" style="width: 800px;float:left" ref="newsform">
-      <el-form-item label="获奖名称" style="margin-top:10px">
+    <el-form label-width="110px" style="width: 800px;float:left" ref="editPerson" :rules="rules" :model="editPerson">
+      <el-form-item label="获奖名称" style="margin-top:10px" prop="categoryName">
         <el-input v-model.trim="editPerson.categoryName" disabled></el-input>
       </el-form-item>
-      <el-form-item label="人员名称" style="margin-top:10px">
+      <el-form-item label="人员名称" style="margin-top:10px" prop="personName">
         <el-input v-model.trim="editPerson.personName"></el-input>
       </el-form-item>
-     <el-form-item label="人员工号" style="margin-top:10px">
+     <el-form-item label="人员工号" style="margin-top:10px" prop="personCode">
         <el-input v-model.trim="editPerson.personCode"></el-input>
       </el-form-item>
-      <el-form-item label="标题" style="margin-top:10px">
+      <el-form-item label="年份" style="margin-top:10px" prop="years" >
+        <div class="block">
+          <!-- <span class="demonstration">年</span> -->
+          <el-date-picker v-model="editPerson.years" type="year" placeholder="选择年"></el-date-picker>
+        </div>
+      </el-form-item>
+      <el-form-item label="标题" style="margin-top:10px " prop="tittle">
         <el-input v-model.trim="editPerson.tittle"></el-input>
       </el-form-item>
-      <el-form-item label="描述" style="margin-top:10px">
+      <el-form-item label="描述" style="margin-top:10px" prop="description">
         <el-input v-model.trim="editPerson.description"></el-input>
       </el-form-item>
     </el-form>
@@ -108,23 +114,19 @@ export default {
                 createby:'',
                 categoryCode:'',
                 updateby:'',
-                id:''
+                id:'',
+                years:''
             },
+      lastRow:{},      
       show: false,
       fileList:[],
       rules: {
-        name: [{ required: true, message: "请输入标题", trigger: "blur" }],
-        magazine: [
-          { required: true, message: "请选择期刊", trigger: "change" }
-        ],
-        typeId: [{ required: true, message: "请选择栏目", trigger: "change" }],
-        keywords: [
-          { required: true, message: "请输入部门/作者", trigger: "blur" }
-        ],
-        // type: [{required: true, message: '请选择栏目',trigger: 'change'}],
-        contentType: [
-          { required: true, message: "请选择资讯类型", trigger: "blur" }
-        ],
+            tittle: [{ required: true, message: "请输入标题", trigger: "blur" }],
+            personName: [{ required: true, message: "请输入人员名称", trigger: "blur" }],
+            personCode: [{ required: true, message: "请输入人员工号", trigger: "blur" }],
+            // headPath: [{ required: true, message: "请上传头像", trigger: "blur" }],
+            years: [{ required: true, message: "请选择年份", trigger: "blur" }],
+            description: [{ required: true, message: "请输入描述", trigger: "blur" }],
       },
       searchList: [],
       type: "",
@@ -137,46 +139,27 @@ export default {
     };
   },
   created() {
-    
-    let lastRow = this.$route.query.row
-    this.editPerson.categoryName = lastRow.categoryName
-    this.editPerson.personName = lastRow.personName
-    this.editPerson.personCode = lastRow.personCode
-    this.editPerson.tittle = lastRow.tittle
-    this.editPerson.description = lastRow.description
-    this.filePath = lastRow.filePath
-    this.photoPath = lastRow.photoPath
-    this.headPath = lastRow.headPath
-    this.covers = lastRow.headPath
+    this.editPerson = this.$route.query.row
   },
   methods: {
     save() {
-//       categoryCode: 899
-// categoryName: "荣耀奖"
-// createby: "顾家管理员"
-// createtime: 1572590951000
-// description: "第一次获奖"
-// filePath: "0012"
-// id: 7
-// personCode: "0991"
-// personName: "小绿蛇"
-// photoPath: "00221"
-// tittle: "获得首届荣耀奖"
-// updateby: "顾家管理"
-// updatetime: 1572590951000
-this.editPerson.filePath = this.filePath
-this.editPerson.photoPath = this.photoPath
-this.editPerson.headPath = this.headPath
-this.editPerson.categoryCode = this.$route.query.row.categoryCode
-this.editPerson.id = this.$route.query.row.id
-this.editPerson.createby = this.$route.query.row.createby
-this.editPerson.updateby = localStorage.getItem("departmentName")
-editCelebrityPerson(this.editPerson).then(res => {
-  console.log(res);
-  
-  this.$router.go(-1)
-})
-
+      this.$refs.editPerson.validate((valid) => {
+          if (valid) {
+            this.editPerson.filePath = this.filePath
+            this.editPerson.photoPath = this.photoPath
+            this.editPerson.headPath = this.headPath
+            this.editPerson.categoryCode = this.$route.query.row.categoryCode
+            this.editPerson.id = this.$route.query.row.id
+            this.editPerson.createby = this.$route.query.row.createby
+            this.editPerson.updateby = localStorage.getItem("departmentName")
+            editCelebrityPerson(this.editPerson).then(res => {
+              console.log(res);
+              this.$router.go(-1)
+            })
+          } else {
+            return false;
+          }
+        });
     },
     handlePreview(file) {
       console.log(file);

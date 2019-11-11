@@ -2,26 +2,26 @@
   <div class="form-box" style="width:1200px">
     <h1 style="margin: 20px 0; font-size: 24px">获奖人员添加</h1>
     <el-form label-width="110px" style="width: 800px;float:left" ref="addPersons" :rules="rules" :model="addPerson">
-      <el-form-item label="获奖名称" style="margin-top:10px">
-        <el-input v-model.trim="addPerson.categoryName" disabled></el-input>
+      <el-form-item label="获奖名称" style="margin-top:10px" prop="categoryName">
+        <el-input v-model="addPerson.categoryName" disabled></el-input>
       </el-form-item>
-      <el-form-item label="人员名称" style="margin-top:10px">
-        <el-input v-model.trim="addPerson.personName"></el-input>
+      <el-form-item label="人员名称" style="margin-top:10px" prop="personName">
+        <el-input v-model="addPerson.personName"></el-input>
       </el-form-item>
-      <el-form-item label="人员工号" style="margin-top:10px">
-        <el-input v-model.trim="addPerson.personCode"></el-input>
+      <el-form-item label="人员工号" style="margin-top:10px" prop="personCode">
+        <el-input v-model="addPerson.personCode"></el-input>
       </el-form-item>
-      <el-form-item label="年份" style="margin-top:10px">
+      <el-form-item label="年份" style="margin-top:10px" prop="years">
         <div class="block">
           <!-- <span class="demonstration">年</span> -->
           <el-date-picker v-model="addPerson.years" type="year" placeholder="选择年"></el-date-picker>
         </div>
       </el-form-item>
-      <el-form-item label="标题" style="margin-top:10px">
-        <el-input v-model.trim="addPerson.tittle"></el-input>
+      <el-form-item label="标题" style="margin-top:10px" prop="tittle">
+        <el-input v-model="addPerson.tittle"></el-input>
       </el-form-item>
-      <el-form-item label="描述" style="margin-top:10px">
-        <el-input v-model.trim="addPerson.description"></el-input>
+      <el-form-item label="描述" style="margin-top:10px" prop="description">
+        <el-input v-model="addPerson.description"></el-input>
       </el-form-item>
     </el-form>
     <div style="float:left;width: 200px;height:200px;margin-left:10px">
@@ -145,7 +145,6 @@ export default {
   },
   methods: {
     save() {
-      debugger
       this.$refs.addPersons.validate((valid) => {
           if (valid) {
             // this.addPerson.years = this.addPerson.years.getFullYear();

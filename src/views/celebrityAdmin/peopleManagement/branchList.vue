@@ -32,20 +32,20 @@ type: 2
 userName: "华文辉" -->
     <!-- 新增窗口 -->
     <el-dialog title="新增用户" :visible.sync="dialog" :append-to-body="true" width="600px">
-      <el-form :model="user" label-width="70px">
-        <el-form-item label="姓名">
+      <el-form :model="user" label-width="70px" ref="user" :rules="rules">
+        <el-form-item label="姓名" prop="userName">
           <el-input v-model="user.userName" placeholder="对应员工姓名"></el-input>
         </el-form-item>
-        <el-form-item label="账号">
+        <el-form-item label="账号" prop="account">
           <el-input v-model="user.account" placeholder="登录用户名"></el-input>
         </el-form-item>
-        <el-form-item label="密码">
+        <el-form-item label="密码" prop="password">
           <el-input v-model="user.password" placeholder="登录密码"></el-input>
         </el-form-item>
-        <el-form-item label="部门">
+        <el-form-item label="部门" prop="departmentName">
           <el-input v-model="user.departmentName" placeholder="请输入部门"></el-input>
         </el-form-item>
-        <el-form-item label="部门id">
+        <el-form-item label="部门id" prop="departmentId">
           <el-input v-model="user.departmentId" placeholder="请输入部门ID"></el-input>
         </el-form-item>
         <!-- <el-form-item label="角色" >
@@ -81,7 +81,14 @@ export default {
         type: 2,
         state: 1
       },
-      showAccount:false
+      showAccount:false,
+      rules: {
+            userName: [{ required: true, message: "请输入员工姓名", trigger: "blur" }],
+            account: [{ required: true, message: "请输入登录用户名", trigger: "blur" }],
+            password: [{ required: true, message: "请输入登录密码", trigger: "blur" }],
+            departmentName: [{ required: true, message: "请输入部门", trigger: "blur" }],
+            departmentId: [{ required: true, message: "请输入部门ID", trigger: "blur" }],
+      },
     };
   },
   created() {
@@ -124,11 +131,18 @@ export default {
         });
     },
     saveUser() {
-      addUser(this.user).then(res => {
-        this.dialog = false;
-        console.log(res);
-        this.upData();
-      });
+      this.$refs.user.validate((valid) => {
+          if (valid) {
+            return
+            addUser(this.user).then(res => {
+              this.dialog = false;
+              console.log(res);
+              this.upData();
+            });
+          } else {
+            return false;
+          }
+        });
     }
   },
   components: {},

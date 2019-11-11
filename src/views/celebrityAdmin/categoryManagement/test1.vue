@@ -12,7 +12,7 @@
       ></el-tree>
     </div>
     <el-dialog title="新增" :visible.sync="dialog" :append-to-body="true" width="800px" style>
-      <el-form :model="userAdd" label-width="100px">
+      <el-form :model="userAdd" label-width="100px" :rules="rules" ref="userAdd">
         <!-- <el-form-item label="层级">
         <el-select v-model="NewLevelCode" placeholder="请选择">
           <el-option v-for="item in levellist" :key="item.id" :label="item.levelName" :value="item.levelCode" :disabled="item.disabled"></el-option>
@@ -26,7 +26,7 @@
           <el-option v-for="item in categoryList" :key="item.id" :label="item.categoryName" :value="item.categoryCode" :disabled="item.disabled"></el-option>
         </el-select>
         </el-form-item>-->
-        <el-form-item label="名称">
+        <el-form-item label="名称" prop="categoryName">
           <el-input v-model="userAdd.categoryName" placeholder></el-input>
         </el-form-item>
         <el-form-item label="奖项/部门">
@@ -70,7 +70,7 @@
       width="800px"
       style="text-align: left"
     >
-      <el-form :model="userEdit" label-width="100px">
+      <el-form :model="userEdit" label-width="100px" :rules="rules" ref="userEdit">
         <!-- <el-form-item label="层级">
         <el-select v-model="selectedLevelCode" placeholder="请选择">
           <el-option v-for="item in levellist" :key="item.id" :label="item.levelName" :value="item.levelCode" :disabled="item.disabled"></el-option>
@@ -84,7 +84,7 @@
           <el-option v-for="item in categoryList" :key="item.id" :label="item.categoryName" :value="item.categoryCode" :disabled="item.disabled"></el-option>
         </el-select>
         </el-form-item>-->
-        <el-form-item label="名称">
+        <el-form-item label="名称" prop="categoryName">
           <el-input v-model="userEdit.categoryName" placeholder></el-input>
         </el-form-item>
         <el-form-item label="奖项/部门">
@@ -179,7 +179,10 @@ export default {
       New0rginCategoryCode: "",
       NewLevelCode: "",
       addLevelFlag: 0,
-      maxLevel: ""
+      maxLevel: "",
+      rules: {
+            categoryName: [{ required: true, message: "请输入部门或奖项", trigger: "blur" }],
+      },
     };
   },
   created() {
@@ -209,31 +212,28 @@ export default {
       this.dialog = true;
     },
     saveUser() {
-      // if(this.addLevelFlag == 1){
-      addCategory(this.userAdd).then(res => {
-        this.$message({
-          type: "success",
-          message: "保存成功!"
+   this.$refs.userAdd.validate((valid) => {
+      if (valid) {
+              this.$refs.userAdd.validate((valid) => {
+              addCategory(this.userAdd).then(res => {
+              this.$message({
+                type: "success",
+                message: "保存成功!"
+              });
+                setTimeout(() => {
+                  this.upData();
+                  this.dialog = false;
+                }, 500);
+            });
+          });
+          } else {
+            return false;
+          }
         });
 
-        setTimeout(() => {
-          this.upData();
-          this.dialog = false;
-        }, 500);
-      });
 
-      // }else{
-      //   addCategory(this.userAdd).then(res => {
-      //           this.$message({
-      //         type: 'success',
-      //         message: '保存成功!'
-      //       });
-      //        setTimeout(() => {
-      //               this.upData();
-      //               this.dialog = false;
-      //         }, 500);
-      //   });
-      // }
+
+      
     },
     treeoEdit(data) {
       this.dialog1 = true;
@@ -245,19 +245,24 @@ export default {
       this.userEdit.orginCategoryCode = data.orginCategoryCode;
       this.userEdit.id = data.id;
       this.userEdit.headPath = data.headPath;
-
     },
     saveEditUser() {
-      editCategory(this.userEdit).then(res => {
-        this.$message({
-          type: "success",
-          message: "修改成功!"
+      this.$refs.userEdit.validate((valid) => {
+          if (valid) {
+            editCategory(this.userEdit).then(res => {
+            this.$message({
+              type: "success",
+              message: "修改成功!"
+            });
+          });
+          setTimeout(() => {
+            this.upData();
+            this.dialog1 = false;
+          }, 500);
+          } else {
+            return false;
+          }
         });
-      });
-      setTimeout(() => {
-        this.upData();
-        this.dialog1 = false;
-      }, 500);
     },
     jump(data) {
       console.log(data);
