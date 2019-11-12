@@ -141,21 +141,20 @@ export default {
     };
   },
   created() {
-    this.addPerson.categoryName = this.$route.query.catorObjs.categoryName;
+    this.addPerson.categoryName =  localStorage.getItem('catorObjsName')
   },
   methods: {
     save() {
       this.$refs.addPersons.validate((valid) => {
           if (valid) {
-            // this.addPerson.years = this.addPerson.years.getFullYear();
+            this.addPerson.years = this.addPerson.years.getFullYear();
             // this.addPerson.years = this.addPerson.years
             this.addPerson.filePath = this.filePath;
             this.addPerson.photoPath = this.photoPath;
             this.addPerson.headPath = this.headPath;
-            this.addPerson.categoryCode = this.$route.query.catorObjs.categoryCode;
+            this.addPerson.categoryCode = localStorage.getItem('catorObjsCode')
             this.addPerson.createby = localStorage.getItem("departmentName");
             this.addPerson.updateby = localStorage.getItem("departmentName");
-            return
             addCelebrityPerson(this.addPerson).then(res => {
               this.$router.go(-1);
             });

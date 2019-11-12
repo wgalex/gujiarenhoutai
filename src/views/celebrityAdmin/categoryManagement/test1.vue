@@ -265,7 +265,11 @@ export default {
         });
     },
     jump(data) {
-      console.log(data);
+      // console.log(data);
+      debugger
+      localStorage.setItem('catorObjsName',data.categoryName)
+      localStorage.setItem('catorObjsCode',data.categoryCode)
+
       this.$router.push({
         name: "celebrityPersonManagementList",
         query: {

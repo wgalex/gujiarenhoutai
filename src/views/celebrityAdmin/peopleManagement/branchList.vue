@@ -79,7 +79,8 @@ export default {
         departmentId: "",
         departmentName: "",
         type: 2,
-        state: 1
+        state: 1,
+        orginCategoryCode:'79400'
       },
       showAccount:false,
       rules: {
@@ -133,7 +134,6 @@ export default {
     saveUser() {
       this.$refs.user.validate((valid) => {
           if (valid) {
-            return
             addUser(this.user).then(res => {
               this.dialog = false;
               console.log(res);

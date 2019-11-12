@@ -140,11 +140,13 @@ export default {
   },
   created() {
     this.editPerson = this.$route.query.row
+    this.editPerson.years = new Date(this.$route.query.row.years.toString())
   },
   methods: {
     save() {
       this.$refs.editPerson.validate((valid) => {
           if (valid) {
+            this.editPerson.years = this.editPerson.years.getFullYear();
             this.editPerson.filePath = this.filePath
             this.editPerson.photoPath = this.photoPath
             this.editPerson.headPath = this.headPath
