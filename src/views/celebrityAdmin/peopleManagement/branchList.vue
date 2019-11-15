@@ -9,12 +9,12 @@
       <el-table-column align="center" prop="userName" label="姓名"></el-table-column>
       <el-table-column align="center" prop="account" label="账户"></el-table-column>
       <el-table-column align="center" prop="departmentName" label="部门"></el-table-column>
-      <el-table-column align="center" prop="departmentId" label="部门Id"></el-table-column>
-      <el-table-column align="center" label="状态">
+      <!-- <el-table-column align="center" prop="departmentId" label="部门Id"></el-table-column> -->
+      <!-- <el-table-column align="center" label="状态">
         <template slot-scope="scope">
           <p>{{scope.row.state | stage }}</p>
         </template>
-      </el-table-column>
+      </el-table-column> -->
       <el-table-column align="center" label="操作" width="150" v-if="showAccount">
         <template slot-scope="scope">
           <el-button type="primary" size="mini" @click="del(scope.row.id) " >删除</el-button>
@@ -45,9 +45,9 @@ userName: "华文辉" -->
         <el-form-item label="部门" prop="departmentName">
           <el-input v-model="user.departmentName" placeholder="请输入部门"></el-input>
         </el-form-item>
-        <el-form-item label="部门id" prop="departmentId">
+        <!-- <el-form-item label="部门id" prop="departmentId">
           <el-input v-model="user.departmentId" placeholder="请输入部门ID"></el-input>
-        </el-form-item>
+        </el-form-item> -->
         <!-- <el-form-item label="角色" >
           <el-radio-group v-model="user.roleId" >
             <el-radio label="2" >编辑</el-radio>
@@ -88,7 +88,7 @@ export default {
             account: [{ required: true, message: "请输入登录用户名", trigger: "blur" }],
             password: [{ required: true, message: "请输入登录密码", trigger: "blur" }],
             departmentName: [{ required: true, message: "请输入部门", trigger: "blur" }],
-            departmentId: [{ required: true, message: "请输入部门ID", trigger: "blur" }],
+            // departmentId: [{ required: true, message: "请输入部门ID", trigger: "blur" }],
       },
     };
   },
@@ -132,6 +132,7 @@ export default {
         });
     },
     saveUser() {
+      this.user.departmentId = this.randomNum(1,80000000)
       this.$refs.user.validate((valid) => {
           if (valid) {
             addUser(this.user).then(res => {
@@ -143,7 +144,21 @@ export default {
             return false;
           }
         });
-    }
+    },
+     //生成从minNum到maxNum的随机数
+    randomNum(minNum, maxNum) {
+      switch (arguments.length) {
+        case 1:
+          return parseInt(Math.random() * minNum + 1, 10);
+          break;
+        case 2:
+          return parseInt(Math.random() * (maxNum - minNum + 1) + minNum, 10);
+          break;
+        default:
+          return 0;
+          break;
+      }
+    },
   },
   components: {},
 

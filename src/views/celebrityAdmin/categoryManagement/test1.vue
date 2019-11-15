@@ -29,12 +29,12 @@
         <el-form-item label="名称" prop="categoryName">
           <el-input v-model="userAdd.categoryName" placeholder></el-input>
         </el-form-item>
-        <el-form-item label="奖项/部门">
+        <!-- <el-form-item label="奖项/部门">
           <el-radio v-model="radio" label="1">奖项</el-radio>
           <el-radio v-model="radio" label="2">部门</el-radio>
-        </el-form-item>
-        <el-form-item label="上传图片" v-if="radio == '1' ? true :false ">
-          <el-upload action="/kukacms/visitor/picUpload.htm?type=10" list-type="picture-card" :auto-upload="true" name="files" :on-success="handleSuccess11"  :limit="1"
+        </el-form-item> -->
+        <el-form-item label="上传图片" >
+          <!-- <el-upload action="/kukacms/visitor/picUpload.htm?type=10" list-type="picture-card" :auto-upload="true" name="files" :on-success="handleSuccess11"  :limit="1"
           :on-exceed="handleExceed12">
             <i slot="default" class="el-icon-plus"></i>
             <div slot="file" slot-scope="{file}" v-if="userAdd.headPath =='' ? true : false">
@@ -55,7 +55,20 @@
           </el-upload>
           <el-dialog :visible.sync="dialogVisible">
             <img width="100%" :src="dialogImageUrl" alt />
-          </el-dialog>
+          </el-dialog> -->
+          <el-upload
+              action="/kukacms/visitor/picUpload.htm?type=10"
+              list-type="picture-card"
+              :on-success="handleSuccess"
+              :auto-upload="true"
+              name="files"
+              :on-preview="handlePictureCardPreview"
+              :on-remove="handleRemove">
+              <i class="el-icon-plus"></i>
+            </el-upload>
+            <el-dialog :visible.sync="dialogVisible" size="tiny">
+              <img width="100%" :src="dialogImageUrl" alt="">
+            </el-dialog>
         </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
@@ -87,36 +100,27 @@
         <el-form-item label="名称" prop="categoryName">
           <el-input v-model="userEdit.categoryName" placeholder></el-input>
         </el-form-item>
-        <el-form-item label="奖项/部门">
+        <!-- <el-form-item label="奖项/部门">
           <el-radio v-model="radio" label="1">奖项</el-radio>
           <el-radio v-model="radio" label="2">部门</el-radio>
-        </el-form-item>
-        <el-form-item label="现在图片" v-if="radio == '1' ? true :false ">
+        </el-form-item> -->
+        <el-form-item label="现在图片" >
           <img  :src="userEdit.headPath" style="width:50px;height:50px" alt/>
         </el-form-item>
-        <el-form-item label="替换图片" v-if="radio == '1' ? true :false ">
-          <el-upload action="/kukacms/visitor/picUpload.htm?type=10" list-type="picture-card" :auto-upload="true" name="files" :on-success="handleSuccess11"  :limit="1"
-          :on-exceed="handleExceed12">
-            <i slot="default" class="el-icon-plus"></i>
-            <div slot="file" slot-scope="{file}" >
-              <img class="el-upload-list__item-thumbnail" :src="userEdit.headPath" alt/>
-              <span class="el-upload-list__item-actions">
-                <span class="el-upload-list__item-preview" @click="handlePictureCardPreview(file)">
-                  <i class="el-icon-zoom-in"></i>
-                </span>
-                <span
-                  v-if="!disabled"
-                  class="el-upload-list__item-delete"
-                  @click="handleRemove(file)"
-                >
-                  <i class="el-icon-delete"></i>
-                </span>
-              </span>
-            </div>
-          </el-upload>
-          <el-dialog :visible.sync="dialogVisible">
-            <img width="100%" :src="dialogImageUrl" alt />
-          </el-dialog>
+        <el-form-item label="替换图片" >
+          <el-upload
+              action="/kukacms/visitor/picUpload.htm?type=10"
+              list-type="picture-card"
+              :on-success="handleSuccess2"
+              :auto-upload="true"
+              :on-preview="handlePictureCardPreview2"
+              name="files"
+              :on-remove="handleRemove2">
+              <i class="el-icon-plus"></i>
+            </el-upload>
+            <el-dialog :visible.sync="dialogVisible2" size="tiny">
+              <img width="100%" :src="dialogImageUrl2" alt="">
+            </el-dialog>
         </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
@@ -154,6 +158,8 @@ export default {
       dialogImageUrl: "",
       dialogVisible: false,
       disabled: false,
+      dialogVisible2:false,
+      dialogImageUrl2: "",
       radio: '2',
       userEdit: {
         categoryName: "",
@@ -162,7 +168,8 @@ export default {
         departmentId: "",
         departmentName: "",
         orginCategoryCode: "",
-        id: ""
+        id: "",
+        headPath:"",
       },
       userAdd: {
         categoryName: "",
@@ -172,7 +179,6 @@ export default {
         departmentName: "",
         orginCategoryCode: "",
         headPath:"",
-        headPath:''
       },
       selected0rginCategoryCode: "",
       selectedLevelCode: "",
@@ -224,16 +230,20 @@ export default {
                   this.upData();
                   this.dialog = false;
                 }, 500);
+              this.userAdd.categoryName = ''
+              this.userAdd.categoryCode = ''
+              this.userAdd.levelCode = ''
+              this.userAdd.departmentId = ''
+              this.userAdd.departmentName = ''
+              this.userAdd.orginCategoryCode = ''
+              this.userAdd.headPath = ''
+              this.handlePictureCardPreview()
             });
           });
           } else {
             return false;
           }
         });
-
-
-
-      
     },
     treeoEdit(data) {
       this.dialog1 = true;
@@ -327,25 +337,43 @@ export default {
         </span>
       );
     },
-    handleRemove(file) {
-      this.userAdd.headPath = this.dialogImageUrl
-      console.log(file);
-    },
+    // handleRemove(file) {
+    //   this.userAdd.headPath = this.dialogImageUrl
+    //   console.log(file);
+    // },
     handlePictureCardPreview(file) {
       this.dialogImageUrl = file.url;
       this.dialogVisible = true;
     },
-    handleDownload(file) {
-      console.log(file);
+    handlePictureCardPreview2(file) {
+      this.dialogImageUrl = file.url;
+      this.dialogVisible = true;
     },
-    handleSuccess11(response, file) {
+    // handleDownload(file) {
+    //   console.log(file);
+    // },
+    handleSuccess2(response, file) {
+      debugger
+      console.log(response.data[1]);
+      this.userEdit.headPath = response.data[1]
+    },
+    handleSuccess(response, file) {
+      debugger
       console.log(response.data[1]);
       this.userAdd.headPath = response.data[1]
-      // this.filePath = response.data[1];
     },
-    handleExceed12(files, fileList) {
-        this.$message.warning(`当前限制选择 1 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`);
+    handleRemove(file, fileList) {
+        console.log(file, fileList);
+        this.userAdd.headPath = ''
+      },
+    handleRemove2(file, fileList) {
+      console.log(file, fileList);
+      this.userEdit.headPath = ''
+
     },
+    // handleExceed12(files, fileList) {
+    //     this.$message.warning(`当前限制选择 1 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`);
+    // },
   },
   
 };

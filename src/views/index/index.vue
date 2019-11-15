@@ -92,12 +92,9 @@ export default {
       })
       
       }
-      
-      //  localStorage.setItem('accessToken', '更改后' + response.data.result.accessToken)
       this.centerDialogVisible = false
     },
     savePassword(){
-      //  this.input1 = this.input2 = ''
       this.centerDialogVisible = true
       this.input2 = ''
       
