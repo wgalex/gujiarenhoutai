@@ -69,6 +69,10 @@
             <el-dialog :visible.sync="dialogVisible" size="tiny">
               <img width="100%" :src="dialogImageUrl" alt="">
             </el-dialog>
+             <div style="position: absolute;width: 160px;height: 110px;border: 1px solid rgb(204, 204, 204);background-color: cyan;top: 0;left: 150px;">
+                  <p>上传图片规范:</p>
+                  <p>700px x 700px</p>
+            </div>
         </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
@@ -121,6 +125,10 @@
             <el-dialog :visible.sync="dialogVisible2" size="tiny">
               <img width="100%" :src="dialogImageUrl2" alt="">
             </el-dialog>
+              <div style="position: absolute;width: 160px;height: 110px;border: 1px solid rgb(204, 204, 204);background-color: cyan;top: 0;left: 150px;">
+                  <p>上传图片规范:</p>
+                  <p>700px x 700px</p>
+            </div>
         </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
@@ -212,7 +220,7 @@ export default {
     },
     append(data) {
       this.userAdd.departmentName = localStorage.getItem("departmentName");
-      this.userAdd.departmentName = localStorage.getItem("departmentName");
+      // this.userAdd.departmentName = localStorage.getItem("departmentName");
       this.userAdd.departmentId = localStorage.getItem("departmentId");
       this.userAdd.orginCategoryCode = data.categoryCode;
       this.dialog = true;
@@ -305,6 +313,7 @@ export default {
       }
     },
     renderContent(h, { node, data, store }) {
+      debugger
       return (
         <span class="custom-tree-node">
           <span>{node.label}</span>
@@ -313,17 +322,19 @@ export default {
               size="mini"
               type="text"
               on-click={() => this.treeoEdit(data)}
-              style="font-size: 14px;"
-            >
-              修改
+              style="font-size: 14px;">
+            {node.level > 2  ? '修改' : data.orginCategoryName == '公司股份' ? '修改':''}
+
+             
             </el-button>
             <el-button
               size="mini"
               type="text"
               on-click={() => this.append(data)}
-              style="font-size: 14px;"
+              style="font-size: 14px;" 
             >
-              新增
+            {node.level > 1  ? '新增'  : data.categoryName=='单位荣誉' ? '':'新增'}
+             
             </el-button>
             <el-button
               size="mini"
@@ -331,13 +342,14 @@ export default {
               on-click={() => this.jump(data)}
               style="font-size: 14px;"
             >
-              名人列表
+            {node.level > 2  ? '名人列表'  : data.orginCategoryName=='公司股份' ? '名人列表':''}
+             
             </el-button>
           </span>
         </span>
       );
     },
-    // handleRemove(file) {
+    // handleRemove(file) { //  
     //   this.userAdd.headPath = this.dialogImageUrl
     //   console.log(file);
     // },
@@ -349,7 +361,7 @@ export default {
       this.dialogImageUrl = file.url;
       this.dialogVisible = true;
     },
-    // handleDownload(file) {
+    // handleDownload(file) {  
     //   console.log(file);
     // },
     handleSuccess2(response, file) {

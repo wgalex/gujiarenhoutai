@@ -45,8 +45,6 @@
 </template>
 
 <script>
-// import { getDocumentList, searchDocument, getTypeList, workNotice } from '@/api/pastList'
-// import { getMagazinePage, updateMag, deleteMag, upMagazine } from '@/api/magList'
 import {
   getlistbyId,
   getlistbytitle,

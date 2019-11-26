@@ -16,6 +16,13 @@ export function addUser (data) {
     data: qs.stringify(data)
   })
 }
+export function updateUser (data) {
+  return fetch({
+    url: `/kukacms/visitor/update/user.htm`,
+    method: 'post',
+    data: qs.stringify(data)
+  })
+}
 
 export function deleteUser (id) {
   return fetch({

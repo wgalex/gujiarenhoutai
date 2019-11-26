@@ -140,6 +140,8 @@ export default {
   },
   created() {
     this.editPerson = this.$route.query.row
+    this.editPerson.updatetime = ''
+    this.editPerson.createtime = ''
     this.editPerson.years = new Date(this.$route.query.row.years.toString())
   },
   methods: {
@@ -147,13 +149,23 @@ export default {
       this.$refs.editPerson.validate((valid) => {
           if (valid) {
             this.editPerson.years = this.editPerson.years.getFullYear();
-            this.editPerson.filePath = this.filePath
-            this.editPerson.photoPath = this.photoPath
-            this.editPerson.headPath = this.headPath
+            if(this.filePath != ''){
+              this.editPerson.filePath = this.filePath
+            }
+            if(this.photoPath != ''){
+              this.editPerson.photoPath = this.photoPath
+            }
+            if(this.headPath != ''){
+              this.editPerson.headPath = this.headPath
+            }
+            // this.editPerson.photoPath = this.photoPath
+            // this.editPerson.headPath = this.headPath
             this.editPerson.categoryCode = this.$route.query.row.categoryCode
             this.editPerson.id = this.$route.query.row.id
             this.editPerson.createby = this.$route.query.row.createby
             this.editPerson.updateby = localStorage.getItem("departmentName")
+            delete this.editPerson.updatetime 
+            delete this.editPerson.createtime 
             editCelebrityPerson(this.editPerson).then(res => {
               console.log(res);
               this.$router.go(-1)

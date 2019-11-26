@@ -97,7 +97,6 @@ export default {
     savePassword(){
       this.centerDialogVisible = true
       this.input2 = ''
-      
     },
     doLogout () {
       // logout().then(res => {

@@ -9,13 +9,15 @@
         <el-button size="mini" type="primary" @click="upPages">上一页</el-button>
         <span>{{curPage}}</span>
         <el-button size="mini" type="primary" @click="nextPages">下一页</el-button>
+         <el-button type="primary" size="mini"><a :href="outUrl" download style="color: #fff">导出</a></el-button>
       </el-col>
+
     </el-row>
-    <el-table :data="list" border style="width: 100%;">
+    <el-table :data="list" border >
       <el-table-column align="center" type="index" label="序号"  prop="id"></el-table-column>
       <el-table-column align="center"  label='获奖年份'  prop="years"></el-table-column>
       <el-table-column align="center" prop="personName" label="获奖人员"></el-table-column>
-      <el-table-column align="center" prop="personCode" label="工号"></el-table-column>
+      <el-table-column align="center" prop="personCode" label="工号" ></el-table-column>
       <el-table-column align="center" prop="categoryName" label="奖励名"></el-table-column>
       <!-- <el-table-column align="center" prop="headPath" label="头像"></el-table-column> -->
       <el-table-column align="center" prop="headPath" label="头像"  style="font-size: 8px">
@@ -39,7 +41,7 @@
           <!-- <el-button type="danger" size="mini" @click="add(scope.row.id)">新增</el-button> -->
         </template>
       </el-table-column>
-      <el-table-column align="center" prop="description" label="描述"></el-table-column>
+      <el-table-column align="center" prop="description" label="描述" min-width="200px"></el-table-column>
       <el-table-column align="center" prop="createby" label="创建人"></el-table-column>
       <el-table-column align="center" label="创建时间">
         <template slot-scope="scope">
@@ -52,7 +54,7 @@
           <p>{{scope.row.updatetime | formatDate}}</p>
         </template>
       </el-table-column>
-      <el-table-column align="center" label="操作" width="400">
+      <el-table-column align="center" label="操作" width="100">
         <template slot-scope="scope">
           <!-- <el-button  type="primary" size="mini" @click="pushDoc">消息推送</el-button> -->
           <el-button type="primary" size="mini" @click="editor(scope.row)">编辑</el-button>
@@ -287,8 +289,15 @@ export default {
       }
     }
   },
-  
+  computed: {
+    outUrl () {
+      let url = '' 
+      // let url = '/kukacms/visitor/exportExcel.htm?magazine=《顾家人》2018年5月上半刊（总第135期）'
+      return url
+    }
+  }
 };
+
 </script>
 
 <style lang="scss" scoped>

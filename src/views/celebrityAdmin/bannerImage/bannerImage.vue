@@ -28,6 +28,10 @@
     </el-dialog>
       <el-button size="mini" type="primary" style="margin:20px 40px;">保存</el-button>
     </div>
+    <div style="width: 160px;height: 100px;border: 1px solid rgb(204, 204, 204);float: left;background-color: cyan;">
+      <p>上传图片规范:</p>
+      <p>1125px x 2436px</p>
+    </div>
   </div>
 </template>
 <script>
@@ -54,4 +58,5 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
+
 </style>
