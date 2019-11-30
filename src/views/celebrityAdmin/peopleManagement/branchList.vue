@@ -115,11 +115,12 @@ export default {
       },
     };
   },
-  created() {
-    this.upData();
+  mounted() {
+    this.upData()
   },
   methods: {
     upData() {
+      debugger
       let queryData = {}
       if( localStorage.getItem("departmentType") == 1){
         queryData.type = 2

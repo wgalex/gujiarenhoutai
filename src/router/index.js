@@ -206,6 +206,11 @@ export default new Router({
       children: [
         //账号管理
         {
+          path: '/bannerImage',
+          name: 'bannerImage',
+          component: () => import('@/views/celebrityAdmin/bannerImage/bannerImage')
+        },
+        {
           path: '/branchList',
           name: 'branchList',
           component: () => import('@/views/celebrityAdmin/peopleManagement/branchList')

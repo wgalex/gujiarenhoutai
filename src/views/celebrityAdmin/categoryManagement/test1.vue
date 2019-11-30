@@ -120,7 +120,7 @@
               :on-preview="handlePictureCardPreview2"
               name="files"
               :on-remove="handleRemove2">
-              <i class="el-icon-plus"></i>
+              <i class="el-icon-plus" slot="default"></i>
             </el-upload>
             <el-dialog :visible.sync="dialogVisible2" size="tiny">
               <img width="100%" :src="dialogImageUrl2" alt="">
@@ -284,7 +284,7 @@ export default {
     },
     jump(data) {
       // console.log(data);
-      debugger
+      
       localStorage.setItem('catorObjsName',data.categoryName)
       localStorage.setItem('catorObjsCode',data.categoryCode)
 
@@ -313,7 +313,7 @@ export default {
       }
     },
     renderContent(h, { node, data, store }) {
-      debugger
+      
       return (
         <span class="custom-tree-node">
           <span>{node.label}</span>
@@ -365,12 +365,12 @@ export default {
     //   console.log(file);
     // },
     handleSuccess2(response, file) {
-      debugger
+      
       console.log(response.data[1]);
       this.userEdit.headPath = response.data[1]
     },
     handleSuccess(response, file) {
-      debugger
+      
       console.log(response.data[1]);
       this.userAdd.headPath = response.data[1]
     },
