@@ -1,5 +1,5 @@
 <template>
-  <div class="custom-tree-container" style="margin:10px 200px">
+  <div class="custom-tree-container" style="margin:10px 200px;position: relative">
     <div style="width:600px">
       <el-tree
         :data="treeList"
@@ -11,6 +11,31 @@
         :render-content="renderContent"
       ></el-tree>
     </div>
+    <div>
+      <el-button size="mini" type='primary' @click="dialog3 = true" style="position: absolute;right: 25%;top: 0;"> 导出名人列表</el-button>
+      </div>
+      <el-dialog
+      title="导出数据"
+      :visible.sync="dialog3"
+      :append-to-body="true"
+    >
+      <p>
+        <el-date-picker
+          v-model="date"
+          type="daterange"
+          range-separator="至"
+          start-placeholder="开始日期"
+          end-placeholder="结束日期"
+          value-format="yyyy-MM-dd HH:mm:ss"
+        ></el-date-picker>
+      </p>
+      <!-- <el-input v-model="member" placeholder="请输入工号" ></el-input> -->
+      <span slot="footer" class="dialog-footer" >
+        <el-button @click="dialog3 = false">取 消</el-button>
+        <el-button type="primary" @click="exportdata" >确认</el-button>
+      </span>
+    </el-dialog>
+
     <el-dialog title="新增" :visible.sync="dialog" :append-to-body="true" width="800px" style>
       <el-form :model="userAdd" label-width="100px" :rules="rules" ref="userAdd">
         <!-- <el-form-item label="层级">
@@ -163,12 +188,14 @@ export default {
       treeList: [],
       dialog: false,
       dialog1: false,
+      dialog3: false,
       dialogImageUrl: "",
       dialogVisible: false,
       disabled: false,
       dialogVisible2:false,
       dialogImageUrl2: "",
       radio: '2',
+      date:null,
       userEdit: {
         categoryName: "",
         categoryCode: "",
@@ -383,9 +410,23 @@ export default {
       this.userEdit.headPath = ''
 
     },
-    // handleExceed12(files, fileList) {
-    //     this.$message.warning(`当前限制选择 1 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`);
-    // },
+    // 导出数据
+    exportdata () {
+      debugger
+      if (!this.date) {
+        return false
+      }
+      let url = `/kukacms/visitor/excel/employee/exportLog1.htm?startDate=${this.date[0]}&endDate=${this.date[1]}`
+      let a = document.createElement('a');
+      a.download = name;
+      a.href = url;
+      a.style.display = 'none'
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      this.member = '';
+      this.dialog3 = false;
+    }
   },
   
 };

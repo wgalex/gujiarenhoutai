@@ -9,7 +9,7 @@
         <el-button size="mini" type="primary" @click="upPages">上一页</el-button>
         <span>{{curPage}}</span>
         <el-button size="mini" type="primary" @click="nextPages">下一页</el-button>
-         <el-button type="primary" size="mini"><a :href="outUrl" download style="color: #fff">导出</a></el-button>
+         <!-- <el-button type="primary" size="mini"><a :href="outUrl" download style="color: #fff">导出</a></el-button> -->
       </el-col>
 
     </el-row>
