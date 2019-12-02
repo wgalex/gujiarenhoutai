@@ -7,3 +7,16 @@ export function push (title) {
       method: 'get',
     })
   }
+
+  export function getdepart () {
+    return fetch({
+      url: `/kukacms/visitor/departmentIds.htm`,
+      method: 'get',
+    })
+  }
+  export function pushdepart (title,departmentId) {
+    return fetch({
+      url: `/kukacms/visitor/workNoticeDepartmentId.htm?title=${title}&departmentId=${departmentId}&type=1`,
+      method: 'get',
+    })
+  }

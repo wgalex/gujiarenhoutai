@@ -412,11 +412,17 @@ export default {
     },
     // 导出数据
     exportdata () {
-      debugger
       if (!this.date) {
         return false
       }
-      let url = `/kukacms/visitor/excel/employee/exportLog1.htm?startDate=${this.date[0]}&endDate=${this.date[1]}`
+      let departmentNames = localStorage.getItem("departmentName")
+      let departmentType = localStorage.getItem("departmentType")
+      let url = ''
+      if(departmentType != '1'){
+         url = `/visitor/excel/employee/exportLog1.htm?startDate=${this.date[0]}&endDate=${this.date[1]}&departmentName=${departmentNames}`
+      }else{
+         url = `/visitor/excel/employee/exportLog1.htm?startDate=${this.date[0]}&endDate=${this.date[1]}`
+      }
       let a = document.createElement('a');
       a.download = name;
       a.href = url;

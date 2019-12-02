@@ -119,7 +119,6 @@ export default {
         this.list = res.data;
         this.maxNumber = this.list.length+1
         console.log(this.maxNumber);
-        
         // this.levellist = res.data
         // for(var i in this.levellist){
         //   if(this.levellist[i].state === 1){

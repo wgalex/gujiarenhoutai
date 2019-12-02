@@ -15,7 +15,6 @@ Vue.use(VueDirectiveImagePreviewer)
 Vue.config.productionTip = false
 
 
-
 Vue.use(ElementUI)
 import './common/css/index.css'
 import 'normalize.css'

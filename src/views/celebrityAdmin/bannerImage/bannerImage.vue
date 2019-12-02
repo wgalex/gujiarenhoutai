@@ -17,21 +17,50 @@
         <img width="100%" :src="dialogImageUrl" alt />
       </el-dialog>
       <div>
-          <el-button size="mini" type="primary" style="margin:20px 40px;display: block;" @click="dosave">保存</el-button>
-          <el-button size="mini" type='primary' @click="dialog3 = true" style="margin: 20px 40px;"> 全体消息推送</el-button>
+        <el-button
+          size="mini"
+          type="primary"
+          style="margin:20px 40px;display: block;"
+          @click="dosave"
+        >保存</el-button>
+        <el-button
+          size="mini"
+          type="primary"
+          @click="dialog3 = true"
+          style="margin: 20px 40px;display: block;"
+        >全体消息推送</el-button>
+        <el-button
+          size="mini"
+          type="primary"
+          @click="dialog4 = true"
+          style="margin: 20px 40px;"
+        >部门消息推送</el-button>
       </div>
-      <el-dialog
-      title="全体消息推送"
-      :visible.sync="dialog3"
-      :append-to-body="true"
-    >
-      <el-input v-model.trim="pushValue"></el-input>
-      <span slot="footer" class="dialog-footer" >
-        <el-button @click="dialog3 = false">取 消</el-button>
-        <el-button type="primary" @click="pushMessage" >确认</el-button>
-      </span>
-    </el-dialog>
-
+      <el-dialog title="部门消息推送" :visible.sync="dialog4" :append-to-body="true">
+        <el-dropdown
+          style="margin-bottom: 20px;"
+          placement="bottom-end"
+          size="small"
+          @command="handleCommand"
+        >
+          <el-button type="primary">
+            {{selectdepart}}
+            <i class="el-icon-arrow-down el-icon--right"></i>
+          </el-button>
+          <el-dropdown-menu slot="dropdown">
+            <el-dropdown-item
+              v-for="items in listobj"
+              :key="items.departId"
+              :command="items"
+            >{{items.departname}}</el-dropdown-item>
+          </el-dropdown-menu>
+        </el-dropdown>
+        <el-input v-model.trim="pushValue1"></el-input>
+        <span slot="footer" class="dialog-footer">
+          <el-button @click="dialog4 = false">取 消</el-button>
+          <el-button type="primary" @click="pushDepMessage">确认</el-button>
+        </span>
+      </el-dialog>
     </div>
 
     <div
@@ -40,19 +69,22 @@
       <p>上传图片规范:</p>
       <p>1125px x 2436px</p>
     </div>
-    <div>
-    </div>
+    <div></div>
   </div>
 </template>
 <script>
 import {
-  push
+  push,
+  getdepart,
+  pushdepart
 } from "@/views/celebrityAdmin/severApi/pushMessage";
 import {
   editIndexComppic,
   addIndexComppic,
   getIndexComppic
 } from "@/views/celebrityAdmin/severApi/indexserver";
+import { Loading } from "element-ui";
+
 export default {
   data() {
     return {
@@ -62,18 +94,48 @@ export default {
       id: 1,
       bannerUrl: "",
       imgurl: "",
-      dialog3:false,
-      pushValue:""
+      dialog3: false,
+      pushValue: "",
+      pushValue1: "",
+      options: {
+        fullscreen: true
+      },
+      listobj: [],
+      dialog4: false,
+      selectdepart: "更多部门",
+      selectdepartid: ""
     };
   },
   created() {
-    this.getBannner()
+    this.getBannner();
+    this.getdepart();
   },
   methods: {
-    getBannner(){
+    handleCommand(command) {
+      this.selectdepart = command.departname;
+      this.selectdepartid = command.departId;
+    },
+    getdepart() {
+      let that = this;
+      let loadingInstance = Loading.service(that.options);
+      getdepart(that.pushValue).then(res => {
+        let dataObj = res.data;
+        let listobjs = [];
+        for (let i in dataObj) {
+          let o = {};
+          o.departId = i;
+          o.departname = dataObj[i];
+          listobjs.push(o);
+        }
+        // console.log(that.listobj);
+        that.listobj = listobjs;
+        loadingInstance.close();
+      });
+    },
+    getBannner() {
       getIndexComppic(this.id).then(res => {
         this.bannerUrl = res.data.url;
-    });
+      });
     },
     handleRemove(file) {
       console.log(file);
@@ -89,49 +151,77 @@ export default {
       this.imgurl = response.data[1];
     },
     handlePictureCardPreview2(file) {
-      
       this.dialogVisible = true;
     },
     handleRemove2(file, fileList) {
       console.log(file, fileList);
-      
     },
     dosave() {
-        editIndexComppic(this.imgurl, this.id).then(res => {
-          // console.log(res);
-          this.id = res.data.id;
-          if (res.code == 1000) {
-            this.$message({
-              message: "保存成功",
-              type: "success"
-            });
-            this.getBannner()
-          }
-        });
-      },
-      pushMessage(){
-        debugger
-        this.$confirm('即将推送, 是否继续?', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }).then(() => {
-        push(this.pushValue).then(res => {
+      editIndexComppic(this.imgurl, this.id).then(res => {
+        // console.log(res);
+        this.id = res.data.id;
+        if (res.code == 1000) {
           this.$message({
-            type: 'success',
-            message: '已推送!'
+            message: "保存成功",
+            type: "success"
           });
-          this.dialog3 = false
-        })
-      }).catch(() => {
-        this.$message({
-          type: 'info',
-          message: '取消推送'
-        });          
+          this.getBannner();
+        }
       });
-      }
+    },
+    pushMessage() {
+      this.$confirm("即将推送, 是否继续?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      })
+        .then(() => {
+          push(this.pushValue).then(res => {
+            this.$message({
+              type: "success",
+              message: "已推送!"
+            });
+            this.dialog3 = false;
+          });
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "取消推送"
+          });
+        });
+    },
+    pushDepMessage() {
+      this.$confirm("即将推送" + this.selectdepart + ", 是否继续?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      })
+        .then(() => {
+          pushdepart(this.pushValue1, this.selectdepartid).then(res => {
+            this.$message({
+              type: "success",
+              message: "已推送!"
+            });
+            this.dialog3 = false;
+          });
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "取消推送"
+          });
+        });
     }
+  }
 };
 </script>
 <style lang="scss" scoped>
+.el-dropdown-link {
+  cursor: pointer;
+  color: #409eff;
+}
+.el-icon-arrow-down {
+  font-size: 12px;
+}
 </style>

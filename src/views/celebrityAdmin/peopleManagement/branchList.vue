@@ -156,7 +156,6 @@ export default {
         });
     },
     edit(row){
-    debugger
      this.dialog1 = true
      this.userEdit = row
      this.userEdit.password = ''
