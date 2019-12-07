@@ -41,7 +41,7 @@
           <!-- <el-button type="danger" size="mini" @click="add(scope.row.id)">新增</el-button> -->
         </template>
       </el-table-column>
-      <el-table-column align="center" prop="description" label="描述" min-width="200px"></el-table-column>
+      <el-table-column align="center" prop="description" label="人物简介" min-width="200px"></el-table-column>
       <el-table-column align="center" prop="createby" label="创建人"></el-table-column>
       <el-table-column align="center" label="创建时间">
         <template slot-scope="scope">

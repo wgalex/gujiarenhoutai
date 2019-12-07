@@ -1,7 +1,13 @@
 <template>
   <div class="form-box" style="width:1200px">
     <h1 style="margin: 20px 0; font-size: 24px">获奖人员添加</h1>
-    <el-form label-width="110px" style="width: 800px;float:left" ref="addPersons" :rules="rules" :model="addPerson">
+    <el-form
+      label-width="110px"
+      style="width: 800px;float:left"
+      ref="addPersons"
+      :rules="rules"
+      :model="addPerson"
+    >
       <el-form-item label="获奖名称" style="margin-top:10px" prop="categoryName">
         <el-input v-model="addPerson.categoryName" disabled></el-input>
       </el-form-item>
@@ -20,66 +26,71 @@
       <el-form-item label="标题" style="margin-top:10px" prop="tittle">
         <el-input v-model="addPerson.tittle"></el-input>
       </el-form-item>
-      <el-form-item label="描述" style="margin-top:10px" prop="description">
-        <el-input v-model="addPerson.description"></el-input>
+      <el-form-item label="人物简介" style="margin-top:10px" prop="description">
+        <el-input type="textarea" v-model="addPerson.description"></el-input>
       </el-form-item>
     </el-form>
-    <div style="float:left;width: 200px;height:200px;margin-left:10px">
-      <img :src=" this.covers" alt style="width: 200px;height:200px" />
+    <div style="float:left;width:400px">
+      <div style="width: 200px;height:200px;margin-left:10px;z-index:99">
+        <img :src=" this.covers" alt style="width: 200px;height:200px" />
+      </div>
+      <div style="margin-top: 21px;margin-left: 43px;">
+        <div>
+          <el-upload
+            class="upload-demo mt"
+            name="files"
+            action="/kukacms/visitor/picUpload.htm?type=10"
+            :on-preview="handlePreview"
+            :on-remove="handleRemove"
+            :before-remove="beforeRemove"
+            :on-success="handleSuccess"
+            :show-file-list="false"
+            multiple
+            :limit="1"
+          >
+            <el-button size="mini" type="primary" style="margin-bottom:20px">上传头像</el-button>
+          </el-upload>
+        </div>
+        <div >
+          <el-upload
+            class="upload-demo mt"
+            name="files"
+            action="/kukacms/visitor/picUpload.htm?type=11"
+            :on-preview="handlePreview11"
+            :on-remove="handleRemove11"
+            :before-remove="beforeRemove11"
+            :on-success="handleSuccess11"
+            :on-exceed="handleExceed11"
+            :show-file-list="true"
+            multiple
+            :limit="1"
+          >
+            <el-button size="mini" type="primary" style="margin-bottom:20px">上传视频</el-button>
+          </el-upload>
+        </div>
+        <div>
+          <el-upload
+            class="upload-demo mt"
+            name="files"
+            action="/kukacms/visitor/picUpload.htm?type=12"
+            :on-preview="handlePreview12"
+            :on-remove="handleRemove12"
+            :before-remove="beforeRemove12"
+            :on-success="handleSuccess12"
+            :show-file-list="true"
+            multiple
+            :limit="1"
+            :on-exceed="handleExceed12"
+          >
+            <el-button size="mini" type="primary" style="margin-bottom:20px">上传图片</el-button>
+          </el-upload>
+        </div>
+        <div>
+          <el-button type="primary" @click="save()" size="mini">保存</el-button>
+        </div>
+      </div>
     </div>
-    <div style="float:right;width:155px">
-      <el-upload
-        class="upload-demo mt"
-        name="files"
-        action="/kukacms/visitor/picUpload.htm?type=10"
-        :on-preview="handlePreview"
-        :on-remove="handleRemove"
-        :before-remove="beforeRemove"
-        :on-success="handleSuccess"
-        :show-file-list="false"
-        multiple
-        :limit="1"
-      >
-        <el-button size="mini" type="primary" style="width: 96px">上传头像</el-button>
-      </el-upload>
-    </div>
-    <div style="float:right;margin-left:35px;margin-top:20px ;width:155px">
-      <el-upload
-        class="upload-demo mt"
-        name="files"
-        action="/kukacms/visitor/picUpload.htm?type=11"
-        :on-preview="handlePreview11"
-        :on-remove="handleRemove11"
-        :before-remove="beforeRemove11"
-        :on-success="handleSuccess11"
-        :on-exceed="handleExceed11"
-        :show-file-list="true"
-        multiple
-        :limit="1"
-      >
-        <el-button size="mini" type="primary" style="width: 96px">上传视频</el-button>
-      </el-upload>
-    </div>
-    <div style="float:right;margin-left:35px;margin-top:20px;width:155px">
-      <el-upload
-        class="upload-demo mt"
-        name="files"
-        action="/kukacms/visitor/picUpload.htm?type=12"
-        :on-preview="handlePreview12"
-        :on-remove="handleRemove12"
-        :before-remove="beforeRemove12"
-        :on-success="handleSuccess12"
-        :show-file-list="true"
-        multiple
-        :limit="1"
-        :on-exceed="handleExceed12"
-      >
-        <el-button size="mini" type="primary" style="width: 96px">上传图片</el-button>
-      </el-upload>
-    </div>
-    <div style="float:right;margin-left:35px;margin-top:10px;width:155px">
-      <el-button type="primary" @click="save()" size="mini">保存</el-button>
-    </div>
+    <tiny class="tiny" v-model="addPerson.mobilecontent"></tiny>
   </div>
 </template>
 
@@ -116,19 +127,25 @@ export default {
         createby: "",
         categoryCode: "",
         updateby: "",
-        years:"",
-        description:''
-
+        years: "",
+        description: "",
+        mobilecontent: ""
       },
       show: false,
       fileList: [],
       rules: {
-            tittle: [{ required: true, message: "请输入标题", trigger: "blur" }],
-            personName: [{ required: true, message: "请输入人员名称", trigger: "blur" }],
-            personCode: [{ required: true, message: "请输入人员工号", trigger: "blur" }],
-            // headPath: [{ required: true, message: "请上传头像", trigger: "blur" }],
-            years: [{ required: true, message: "请选择年份", trigger: "blur" }],
-            description: [{ required: true, message: "请输入描述", trigger: "blur" }],
+        tittle: [{ required: true, message: "请输入标题", trigger: "blur" }],
+        personName: [
+          { required: true, message: "请输入人员名称", trigger: "blur" }
+        ],
+        personCode: [
+          { required: true, message: "请输入人员工号", trigger: "blur" }
+        ],
+        // headPath: [{ required: true, message: "请上传头像", trigger: "blur" }],
+        years: [{ required: true, message: "请选择年份", trigger: "blur" }],
+        description: [
+          { required: true, message: "请输入描述", trigger: "blur" }
+        ]
       },
       searchList: [],
       type: "",
@@ -141,39 +158,38 @@ export default {
     };
   },
   created() {
-    this.addPerson.categoryName =  localStorage.getItem('catorObjsName')
+    this.addPerson.categoryName = localStorage.getItem("catorObjsName");
   },
   methods: {
     save() {
-      this.$refs.addPersons.validate((valid) => {
-          if (valid) {
-            this.addPerson.years = this.addPerson.years.getFullYear();
-            // this.addPerson.years = this.addPerson.years
-            this.addPerson.filePath = this.filePath;
-            this.addPerson.photoPath = this.photoPath;
-            this.addPerson.headPath = this.headPath;
-            this.addPerson.categoryCode = localStorage.getItem('catorObjsCode')
-            this.addPerson.createby = localStorage.getItem("departmentName");
-            this.addPerson.updateby = localStorage.getItem("departmentName");
-            addCelebrityPerson(this.addPerson).then(res => {
-              this.$router.go(-1);
-            });
-          } else {
-            return false;
-          }
-        });
-      
+      this.$refs.addPersons.validate(valid => {
+        if (valid) {
+          this.addPerson.years = this.addPerson.years.getFullYear();
+          // this.addPerson.years = this.addPerson.years
+          this.addPerson.filePath = this.filePath;
+          this.addPerson.photoPath = this.photoPath;
+          this.addPerson.headPath = this.headPath;
+          this.addPerson.categoryCode = localStorage.getItem("catorObjsCode");
+          this.addPerson.createby = localStorage.getItem("departmentName");
+          this.addPerson.updateby = localStorage.getItem("departmentName");
+          addCelebrityPerson(this.addPerson).then(res => {
+            this.$router.go(-1);
+          });
+        } else {
+          return false;
+        }
+      });
     },
-     submitForm(formName) {
-        this.$refs[formName].validate((valid) => {
-          if (valid) {
-            alert('submit!');
-          } else {
-            console.log('error submit!!');
-            return false;
-          }
-        });
-      },
+    submitForm(formName) {
+      this.$refs[formName].validate(valid => {
+        if (valid) {
+          alert("submit!");
+        } else {
+          console.log("error submit!!");
+          return false;
+        }
+      });
+    },
     handlePreview(file) {
       console.log(file);
     },
@@ -242,6 +258,10 @@ export default {
       console.log(response.data[1]);
       this.filePath = response.data[1];
     }
+  },
+  components: {
+    tiny,
+    cropper
   }
 };
 </script>
@@ -251,7 +271,8 @@ export default {
 .form-box {
 }
 .tiny {
-  margin: 20px 0;
+  float: left;
+  // margin: 20px 0;
   padding-bottom: 10px;
 }
 
