@@ -417,11 +417,12 @@ export default {
       }
       let departmentNames = localStorage.getItem("departmentName")
       let departmentType = localStorage.getItem("departmentType")
-      let url = ''
+      let url = null
       if(departmentType != '1'){
-         url = `/visitor/excel/employee/exportLog1.htm?startDate=${this.date[0]}&endDate=${this.date[1]}&departmentName=${departmentNames}`
+         url = `/kukacms/visitor/excel/employee/exportLog1.htm?startDate=${this.date[0]}&endDate=${this.date[1]}&departmentName=${departmentNames}`
+        //  let url = `/kukacms/api/exportLog.htm?startDate=${this.date[0]}&endDate=${this.date[1]}`
       }else{
-         url = `/visitor/excel/employee/exportLog1.htm?startDate=${this.date[0]}&endDate=${this.date[1]}`
+         url = `/kukacms/visitor/excel/employee/exportLog1.htm?startDate=${this.date[0]}&endDate=${this.date[1]}`
       }
       let a = document.createElement('a');
       a.download = name;

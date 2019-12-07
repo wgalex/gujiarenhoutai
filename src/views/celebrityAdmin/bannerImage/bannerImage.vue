@@ -23,20 +23,20 @@
           style="margin:20px 40px;display: block;"
           @click="dosave"
         >保存</el-button>
-        <el-button
+        <!-- <el-button
           size="mini"
           type="primary"
           @click="dialog3 = true"
           style="margin: 20px 40px;display: block;"
-        >全体消息推送</el-button>
-        <el-button
+        >全体消息推送</el-button> -->
+        <!-- <el-button
           size="mini"
           type="primary"
           @click="dialog4 = true"
           style="margin: 20px 40px;"
-        >部门消息推送</el-button>
+        >部门消息推送</el-button> -->
       </div>
-      <el-dialog title="部门消息推送" :visible.sync="dialog4" :append-to-body="true">
+      <!-- <el-dialog title="部门消息推送" :visible.sync="dialog4" :append-to-body="true">
         <el-dropdown
           style="margin-bottom: 20px;"
           placement="bottom-end"
@@ -60,14 +60,14 @@
           <el-button @click="dialog4 = false">取 消</el-button>
           <el-button type="primary" @click="pushDepMessage">确认</el-button>
         </span>
-      </el-dialog>
+      </el-dialog> -->
     </div>
 
     <div
       style="width: 160px;height: 100px;border: 1px solid rgb(204, 204, 204);float: left;background-color: cyan;"
     >
       <p>上传图片规范:</p>
-      <p>1125px x 2436px</p>
+      <p>612px x 340px</p>
     </div>
     <div></div>
   </div>
@@ -108,7 +108,7 @@ export default {
   },
   created() {
     this.getBannner();
-    this.getdepart();
+    // this.getdepart();
   },
   methods: {
     handleCommand(command) {
@@ -149,6 +149,7 @@ export default {
     },
     handleSuccess2(response, file) {
       this.imgurl = response.data[1];
+      this.getBannner()
     },
     handlePictureCardPreview2(file) {
       this.dialogVisible = true;

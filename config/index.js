@@ -17,9 +17,9 @@ module.exports = {
         // target: 'http://172.16.28.150:9999/kukacms',
         // http://172.16.26.125:9090
         // target: 'http://192.168.251.33:8880`/kukacms/',
-        // target: 'http://172.16.28.94:8080/kukacms/',
+        // target: 'http://172.16.28.57:8880/kukacms/',
+        target: 'http://192.168.251.33:8880/kukacms/',
         // target: 'http://192.168.251.33:8880/kukacms/',
-        target: 'http://192.168.251.33:8880//kukacms/',
         // target: 'http://116.62.60.13:8090/kukacms',
         // target: 'http://family.kukahome.com:8880/kukacms',
 
