@@ -142,7 +142,7 @@ export default {
       editId: "",
       dialog4: false,
       listobj: [],
-      selectdepart: "",
+      selectdepart: "请选择",
       selectdepartid: "",
       pushdepartmes: ""
     };
@@ -184,7 +184,12 @@ export default {
     },
     getdepart() {
       let that = this;
-      // let loadingInstance = Loading.service(that.options);
+      let loadingInstance = Loading.service(that.options);
+      if(localStorage.getItem('listobjs') != null){
+        that.listobj = JSON.parse(localStorage.getItem('listobjs'));
+        loadingInstance.close();
+        return
+      }
       getdepart(that.pushValue).then(res => {
         let dataObj = res.data;
         let listobjs = [];
@@ -196,6 +201,8 @@ export default {
         }
         // console.log(that.listobj);
         that.listobj = listobjs;
+        let litp =JSON.stringify(listobjs)
+        localStorage.setItem('listobjs', litp)
         loadingInstance.close();
       });
     },

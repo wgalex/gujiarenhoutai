@@ -115,23 +115,23 @@ export default {
       this.selectdepart = command.departname;
       this.selectdepartid = command.departId;
     },
-    getdepart() {
-      let that = this;
-      let loadingInstance = Loading.service(that.options);
-      getdepart(that.pushValue).then(res => {
-        let dataObj = res.data;
-        let listobjs = [];
-        for (let i in dataObj) {
-          let o = {};
-          o.departId = i;
-          o.departname = dataObj[i];
-          listobjs.push(o);
-        }
-        // console.log(that.listobj);
-        that.listobj = listobjs;
-        loadingInstance.close();
-      });
-    },
+    // getdepart() {
+    //   let that = this;
+    //   let loadingInstance = Loading.service(that.options);
+    //   getdepart(that.pushValue).then(res => {
+    //     let dataObj = res.data;
+    //     let listobjs = [];
+    //     for (let i in dataObj) {
+    //       let o = {};
+    //       o.departId = i;
+    //       o.departname = dataObj[i];
+    //       listobjs.push(o);
+    //     }
+    //     // console.log(that.listobj);
+    //     that.listobj = listobjs;
+    //     loadingInstance.close();
+    //   });
+    // },
     getBannner() {
       getIndexComppic(this.id).then(res => {
         this.bannerUrl = res.data.url;
