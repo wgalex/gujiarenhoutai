@@ -82,7 +82,7 @@
           {{selectdepart}}
           <i class="el-icon-arrow-down el-icon--right"></i>
         </el-button>
-        <el-dropdown-menu slot="dropdown">
+        <el-dropdown-menu slot="dropdown" class="project-dropdown">
           <el-dropdown-item
             v-for="items in listobj"
             :key="items.departId"
@@ -184,7 +184,7 @@ export default {
     },
     getdepart() {
       let that = this;
-      let loadingInstance = Loading.service(that.options);
+      // let loadingInstance = Loading.service(that.options);
       if(localStorage.getItem('listobjs') != null){
         that.listobj = JSON.parse(localStorage.getItem('listobjs'));
         loadingInstance.close();
@@ -451,5 +451,22 @@ export default {
 .el-table__footer,
 .el-table__header {
   table-layout: automatic;
+}
+.project-dropdown{
+  //设置高度才能显示出滚动条 !important
+  height:300px;
+  overflow: auto;
+}
+.project-dropdown::-webkit-scrollbar
+{
+    width: 5px;
+    height: 5px;
+    background-color: #F5F5F5;
+}
+.project-dropdown::-webkit-scrollbar-track
+{
+    //-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+    border-radius: 10px;
+    background-color: #F5F5F5;
 }
 </style>

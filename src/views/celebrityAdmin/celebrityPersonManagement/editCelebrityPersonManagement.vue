@@ -90,7 +90,7 @@
         </div>
       </div>
     </div>
-    <tiny class="tiny" v-model="editPerson.mobilecontent" style="float: left;"></tiny>
+    <tiny class="tiny" v-model="editPerson.mobilecontent"></tiny>
   </div>
 </template>
 
@@ -276,7 +276,8 @@ export default {
 .form-box {
 }
 .tiny {
-  margin: 20px 0;
+  float: left;
+  // margin: 20px 0;
   padding-bottom: 10px;
 }
 
