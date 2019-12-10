@@ -228,6 +228,7 @@ export default {
         });
     },
     pushAllmes(item) {
+      debugger
       let pushAllmesage =
         "" +
         item.personName +
@@ -236,11 +237,15 @@ export default {
         "年" +
         item.categoryName +
         "";
+      // http://www.rc.kukahome.com:8880/mrt/#/honorRealDetail
+      let url = 'http://www.rc.kukahome.com:8880/mrt/#/honorRealDetail?personCode='+item.personCode +'&categoryName='+item.categoryName+''
+      console.log(url);
       this.$confirm("即将全体推送, 是否继续?", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         type: "warning"
       }).then(() => {
+        return
           push(pushAllmesage).then(res => {
             this.$message({
               type: "success",

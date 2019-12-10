@@ -1,9 +1,9 @@
 import fetch from '@/api/fetch.js'
 import qs from 'qs'
 
-export function push (title) {
+export function push (title,url) {
     return fetch({
-      url: `/kukacms/visitor/workNotice.htm?title=${title}&type=1`,
+      url: `/kukacms/visitor/workNotice.htm?title=${title}&type=1&url=${url}`,
       method: 'get',
     })
   }
@@ -14,9 +14,9 @@ export function push (title) {
       method: 'get',
     })
   }
-  export function pushdepart (title,departmentId) {
+  export function pushdepart (title,departmentId,url) {
     return fetch({
-      url: `/kukacms/visitor/workNoticeDepartmentId.htm?title=${title}&departmentId=${departmentId}&type=1`,
+      url: `/kukacms/visitor/workNoticeDepartmentId.htm?title=${title}&departmentId=${departmentId}&type=1&url=${url}`,
       method: 'get',
     })
   }
